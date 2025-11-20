@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+project_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+session="dst-data-cleaner"
+
+# Setup new session
+#---------------------------------------------------------------------------------
+
+mkdir -p "${project_dir}/tmp"
+
+HOST="localhost"
+BACKEND_PORT=8000
+BASE_URL="http://${HOST}:${BACKEND_PORT}"
+
+tmux new-session -d -s $session \
+     -e "DSTD_PROJECT_DIR=${project_dir}"
+
+# CLI window
+#---------------------------------------------------------------------------------
+
+tmux send-keys "nix develop" C-m
+
+# Binds
+#---------------------------------------------------------------------------------
+
+tmux unbind C-b
+tmux set -g prefix C-a
+tmux setw -g mode-keys vi
+tmux bind -n C-h select-pane -L
+tmux bind -n C-j select-pane -D
+tmux bind -n C-k select-pane -U
+tmux bind -n C-l select-pane -R
+tmux bind -n C-q kill-session
+
+tmux attach-session -t $session

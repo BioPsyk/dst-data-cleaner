@@ -1,0 +1,30 @@
+{
+  "stage1": {
+    "BEF": {
+      "columns": [
+        "PNR",
+        "MOR_ID",
+        "FAR_ID",
+        "FAMILIE_ID",
+        "ADRESSE_ID",
+        "FOED_DAG",
+        "FOEDREG_KODE",
+        "KOEN"
+      ]
+    },
+    "LMDB": {
+      "columns": [
+        "PNR",
+        "ATC",
+        "IBNR",
+        "EKSD",
+        "VOLUME",
+        "VOLTYPECODE",
+        "PACKSIZE",
+        "STRNUM",
+        "STRUNIT",
+        "DOSFORM"
+      ]
+    }
+  }
+}

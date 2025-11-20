@@ -1,0 +1,6 @@
+/tmp
+/work
+
+result
+.nextflow*
+*.html

@@ -1,0 +1,163 @@
+# -*- org-confirm-babel-evaluate: nil -*-
+#+OPTIONS: ^:nil
+#+OPTIONS: html-postamble:nil
+#+LANGUAGE: en-us
+#+HTML_DOCTYPE: html5
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+#+HTML_HEAD: <style>blockquote p:last-child, div.figure p {margin: 0;}</style>
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [a4paper,12pt]
+#+LATEX_HEADER: \usepackage[swedish]{babel}
+#+LATEX_HEADER: \renewcommand{\familydefault}{\sfdefault}
+#+LATEX_HEADER: \usepackage{background}
+#+LATEX_HEADER: \usepackage{helvet}
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+#+LATEX_HEADER: \usepackage{parskip}
+#+LATEX_HEADER: \usepackage{tabularx}
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{titlesec}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage[document]{ragged2e}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage{sectsty}
+#+LATEX_HEADER: \usepackage[most]{tcolorbox}
+#+LATEX_HEADER: \definecolor{light_grey}{RGB}{51,51,51}
+#+LATEX_HEADER: \definecolor{bright_grey}{RGB}{249,249,249}
+#+LATEX_HEADER: \definecolor{python_blue}{RGB}{41,128,185}
+#+LATEX_HEADER: \titleformat*{\section}{\LARGE\bfseries}
+#+LATEX_HEADER: \titleformat*{\subsection}{\Large\bfseries}
+#+LATEX_HEADER: \titleformat*{\subsubsection}{\large\bfseries}
+#+LATEX_HEADER: \titleformat*{\paragraph}{\large\bfseries}
+#+LATEX_HEADER: \titleformat*{\subparagraph}{\large\bfseries}
+#+LATEX_HEADER: \renewcommand{\baselinestretch}{1.2}
+#+LATEX_HEADER: \hypersetup{colorlinks=true, urlcolor=python_blue, linkcolor=python_blue, citecolor=red}
+#+LATEX_HEADER: \sectionfont{\color{light_grey}}
+#+LATEX_HEADER: \subsectionfont{\color{light_grey}}
+#+LATEX_HEADER: \tolerance=1
+#+LATEX_HEADER: \emergencystretch=\maxdimen
+#+LATEX_HEADER: \hyphenpenalty=10000
+#+LATEX_HEADER: \hbadness=10000
+#+LATEX_HEADER: \makeatletter
+#+LATEX_HEADER: \renewenvironment{quote}{%
+#+LATEX_HEADER:   \tcolorbox[
+#+LATEX_HEADER:     top=10pt,
+#+LATEX_HEADER:     bottom=10pt
+#+LATEX_HEADER:   ]
+#+LATEX_HEADER:   \parskip=0.5\baselineskip \advance\parskip by 0pt plus 2pt
+#+LATEX_HEADER:   \parindent=0pt
+#+LATEX_HEADER: }{%
+#+LATEX_HEADER:   \endtcolorbox
+#+LATEX_HEADER: }
+#+LATEX_HEADER: \makeatother
+#+LATEX_HEADER: \definecolor{light-gray}{gray}{0.95}
+#+LATEX_HEADER: \lstset{
+#+LATEX_HEADER:   xleftmargin=0.5cm,frame=tlbr,framesep=4pt,framerule=0pt,
+#+LATEX_HEADER:   columns=fullflexible,
+#+LATEX_HEADER:   backgroundcolor=\color{light-gray},
+#+LATEX_HEADER:   basicstyle=\footnotesize\ttfamily,
+#+LATEX_HEADER:   breakatwhitespace=false,
+#+LATEX_HEADER:   breaklines=true,
+#+LATEX_HEADER:   frame=single,
+#+LATEX_HEADER:   keepspaces=true,
+#+LATEX_HEADER:   rulecolor=\color{black},
+#+LATEX_HEADER:   showspaces=false,
+#+LATEX_HEADER:   showstringspaces=false,
+#+LATEX_HEADER:   showtabs=false,
+#+LATEX_HEADER:   stepnumber=2,
+#+LATEX_HEADER:   tabsize=2,
+#+LATEX_HEADER: }
+#+LATEX: \color{light_grey}
+#+LATEX: \frenchspacing
+#+LATEX: \raggedright
+#+TITLE: Architecture
+#+AUTHOR: Richard Zetterberg <richard.zetterberg@gmail.com>
+
+* Domain model
+
+#+LATEX: \vspace{0.5cm}
+#+LATEX: \begin{center}
+#+NAME: domain-model1
+#+ATTR_HTML: :style max-width: 100%;
+#+BEGIN_SRC plantuml :file ./docs/images/domain-model1.png :exports results
+@startuml
+skinparam dpi 300
+skinparam shadowing false
+skinparam monochrome true
+skinparam padding 5
+skinparam nodesep 80
+skinparam ranksep 80
+skinparam defaultTextAlignment center
+
+skinparam rectangle<<image_holder>> {
+  Shadowing false
+  StereotypeFontSize 0
+  BackgroundColor #ffffff
+  BorderColor #ffffff
+}
+
+rectangle "National\nRegister" as natreg
+collections "Register\nData" as register_data
+rectangle "<img:docs/images/dst-logotype-uk.png{scale=0.2}>" <<image_holder>> as dst
+collections "Statistical\nData" as stat_data
+actor "Researcher" as researcher
+
+natreg --> register_data : " Provides"
+register_data -RIGHT-> dst : " Sent to"
+dst --> stat_data : " Provides"
+researcher -LEFT-> stat_data : "Uses"
+@enduml
+#+END_SRC
+
+#+ATTR_LATEX: :placement [H]
+#+RESULTS: domain-model1
+[[file:./docs/images/domain-model1.png]]
+
+#+LATEX: \end{center}
+
+#+LATEX: \vspace{0.5cm}
+#+LATEX: \begin{center}
+#+NAME: domain-model2
+#+ATTR_HTML: :style max-width: 100%;
+#+BEGIN_SRC plantuml :file ./docs/images/domain-model2.png :exports results
+@startuml
+skinparam dpi 300
+skinparam shadowing false
+skinparam monochrome true
+skinparam padding 5
+skinparam nodesep 80
+skinparam ranksep 80
+skinparam defaultTextAlignment center
+
+skinparam rectangle<<image_holder>> {
+  Shadowing false
+  StereotypeFontSize 0
+  BackgroundColor #ffffff
+  BorderColor #ffffff
+}
+
+rectangle "<img:docs/images/dst-logotype-uk.png{scale=0.2}>" <<image_holder>> as dst
+rectangle "<img:docs/images/dst-data-cleaner-logotype.png{scale=0.2}>" <<image_holder>> as data_cleaner
+collections "Statistical\nData" as stat_data
+rectangle "Dataset" as dataset
+usecase "Name" as dataset_name
+file "Dataset\nFile\n<b>.sas7bdat</b>" as dataset_file
+usecase "Name" as dataset_file_name
+usecase "Year" as dataset_file_year
+
+dst --> stat_data : " Provides"
+stat_data -RIGHT-> dataset : " Consists of many"
+dataset --> dataset_file : " Have many"
+dataset -UP-> dataset_name
+dataset_file --> dataset_file_name
+dataset_file --> dataset_file_year
+@enduml
+#+END_SRC
+
+#+ATTR_LATEX: :placement [H]
+#+RESULTS: domain-model2
+[[file:./docs/images/domain-model2.png]]
+
+#+LATEX: \end{center}
