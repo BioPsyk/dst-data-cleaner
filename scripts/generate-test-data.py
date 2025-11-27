@@ -145,11 +145,12 @@ def main(args):
   if args.random_seed:
     fake.seed_instance(args.random_seed)
 
-  bef_dataset  = fake_bef_dataset(fake, args.bef_families_count)
-  lmdb_dataset = fake_lmdb_dataset(fake, bef_dataset)
+  for year in ["198512", "198612"]:
+    bef_dataset  = fake_bef_dataset(fake, args.bef_families_count)
+    lmdb_dataset = fake_lmdb_dataset(fake, bef_dataset)
 
-  bef_cols  = write_dataset(bef_dataset, args.output_directory, "bef198512")
-  lmdb_cols = write_dataset(lmdb_dataset, args.output_directory, "lmdb198512")
+    bef_cols  = write_dataset(bef_dataset, args.output_directory, f"bef{year}")
+    lmdb_cols = write_dataset(lmdb_dataset, args.output_directory, f"lmdb{year}")
 
   logger.info(f"Updating stage1 of metadata file {args.metadata_file}")
 
