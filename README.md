@@ -48,7 +48,7 @@ format of the data. The actual data is not manipulated in any way.
 manipulated and related datasets are merged together to form new datasets.
 
 By keeping the files produced in both stages, researchers can either use the opinionated datasets
-that are easier to work with, or they are doing their own custom cleaning, they can use the unchanged
+that are easier to work with, or if they are doing their own custom cleaning, they can use the unchanged
 datasets.
 
 ## Project overview 👀
