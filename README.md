@@ -23,7 +23,7 @@ registers provides "register data" for different governmental organizations, whe
 organizations. In turn `dst` provides "statistical data" for research organizations, that is has compiled
 from the register data it received from the national registers.
 
-![Domain model 1](file:./docs/images/domain-model1.png)
+![Domain model 1](./docs/images/domain-model1.png)
 
 The statistical data that `dst` provides are made up of around [**400** distinct datasets](https://danmarksdatavindue.dk/DDVDatasafari/#/registers).
 Each dataset has a unique name and is provided as a set of "dataset files" in the proprietary
@@ -32,7 +32,7 @@ format `.sas7bdat`. Each dataset file represents a single year and holds the dat
 
 Here's where the pipeline `dst-data-cleaner` comes in the picture.
 
-![Domain model 2](file:./docs/images/domain-model2.png)
+![Domain model 2](./docs/images/domain-model2.png)
 
 ## Project overview 👀
 
