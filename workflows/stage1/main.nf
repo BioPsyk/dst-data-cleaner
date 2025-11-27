@@ -5,17 +5,17 @@
 
 process sas7bdatToCsv {
   input:
-  tuple path(sas_file), val(metadata)
+  tuple path(sas_file), val(name), val(year), val(columns)
 
   output:
-  tuple path(csv_file), val(metadata)
+  tuple path(csv_file), val(name), val(year)
 
   script:
-  csv_file = "${metadata["key"]}-${metadata["date"]}.csv"
+  csv_file = "${name}-${year}.csv"
   """
   sas7bdat-to-csv.R \
     "${sas_file}"  \
-    "${metadata["columns"].join(",")}" \
+    "${columns.join(",")}" \
     "${csv_file}"
   """
 }
@@ -24,7 +24,7 @@ process sas7bdatToCsv {
 // Helpers
 
 def attachMetadata(metadata, f) {
-  def matcher = f.getBaseName() =~ /^(?<key>[A-Za-z]+)(?<date>[0-9]+)$/;
+  def matcher = f.getBaseName() =~ /^(?<name>[A-Za-z]+)(?<year>[0-9]+)$/;
 
   if (!matcher.matches()) {
     throw new Exception(
@@ -33,17 +33,14 @@ def attachMetadata(metadata, f) {
     );
   }
 
-  def key  = matcher.group("key")
-  def date = matcher.group("date")
-  def md   = metadata[key]
+  def name = matcher.group("name")
+  def year = matcher.group("year")
+  def md   = metadata[name]
 
-  if (!md) md = metadata[key.toUpperCase()]
+  if (!md) md = metadata[name.toUpperCase()]
   if (!md) return null
 
-  md["key"]  = key
-  md["date"] = date
-
-  return [f, md]
+  return [f, name, year, md["columns"]]
 }
 
 //---------------------------------------------------------------------------------
@@ -51,17 +48,24 @@ def attachMetadata(metadata, f) {
 workflow stage1 {
   take:
   metadata
-  sasFiles
+  yearlySasFiles
 
   main:
-  sasFiles |
-    map(f -> attachMetadata(metadata, f)) |
+  yearlySasFiles |
+    map(it -> attachMetadata(metadata, it)) |
     sas7bdatToCsv |
-    set{ csvFiles }
+    set{ yearlyCsvFiles }
+
+  yearlyCsvFiles |
+    // We only need the file and the dataset name
+    map(it -> it[0..1]) |
+    // Group all the files by dataset name
+    groupTuple(by: 1) |
+    view
 
   emit:
-  csvFiles
+  yearlyCsvFiles
 
   publish:
-  csvFiles >> "stage1/csv"
+  yearlyCsvFiles >> "stage1/csv"
 }

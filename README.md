@@ -23,8 +23,6 @@ registers provides "register data" for different governmental organizations, whe
 organizations. In turn `dst` provides "statistical data" for research organizations, that is has compiled
 from the register data it received from the national registers.
 
-![Domain model 1](./docs/images/domain-model1.png)
-
 The statistical data that `dst` provides are made up of around
 [**400** distinct datasets](https://danmarksdatavindue.dk/DDVDatasafari/#/registers).
 Each dataset has a unique name and is provided as a set of "dataset files" in the proprietary
@@ -39,7 +37,7 @@ Here's where the pipeline `dst-data-cleaner` comes into the picture. It processe
 - **Stage 2**:
     - Create new opinionated datasets by manipulating and combining related datasets
 
-![Domain model 2](./docs/images/domain-model2.png)
+![Pipeline domain model](./docs/images/domain-model-pipeline.png)
 
 **Stage1** of the pipeline is only about picking out what data to clean and changing the storage
 format of the data. The actual data is not manipulated in any way.
@@ -50,6 +48,22 @@ manipulated and related datasets are merged together to form new datasets.
 By keeping the files produced in both stages, researchers can either use the opinionated datasets
 that are easier to work with, or if they are doing their own custom cleaning, they can use the unchanged
 datasets.
+
+## New datasets
+
+These are the new datasets that are derived in stage 2 of the pipeline:
+
+### Population
+
+![Population dataset diagram](./docs/images/dataset-population.png)
+
+### Hospital
+
+![Hospital dataset diagram](./docs/images/dataset-hospital.png)
+
+### Cause of death
+
+![Cause of death dataset diagram](./docs/images/dataset-cause-of-death.png)
 
 ## Project overview 👀
 

@@ -18,8 +18,6 @@ workflow {
     metadata["stage1"],
     channel.fromPath(dataDir.absolutePath + "/*.sas7bdat", type: "file")
   )
-
-  stage1.out | view
 }
 
 output {

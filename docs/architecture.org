@@ -77,11 +77,13 @@
 
 * Domain model
 
+** Pipeline
+
 #+LATEX: \vspace{0.5cm}
 #+LATEX: \begin{center}
-#+NAME: domain-model1
+#+NAME: domain-model-pipeline
 #+ATTR_HTML: :style max-width: 100%;
-#+BEGIN_SRC plantuml :file ./images/domain-model1.png :exports results
+#+BEGIN_SRC plantuml :file ./images/domain-model-pipeline.png :exports results
 @startuml
 skinparam dpi 300
 skinparam shadowing false
@@ -94,36 +96,6 @@ skinparam defaultTextAlignment center
 rectangle "National\nRegister" as natreg
 collections "Register\nData" as register_data
 rectangle "<img:./images/dst-logotype-uk.png{scale=0.2}>" as dst
-collections "Statistical\nData" as stat_data
-
-natreg --> register_data : " Provides"
-register_data -RIGHT-> dst : " Sent to"
-dst --> stat_data : " Provides"
-stat_data .UP.> register_data : " Created from"
-@enduml
-#+END_SRC
-
-#+ATTR_LATEX: :placement [H]
-#+RESULTS: domain-model1
-[[file:./images/domain-model1.png]]
-
-#+LATEX: \end{center}
-
-#+LATEX: \vspace{0.5cm}
-#+LATEX: \begin{center}
-#+NAME: domain-model2
-#+ATTR_HTML: :style max-width: 100%;
-#+BEGIN_SRC plantuml :file ./images/domain-model2.png :exports results
-@startuml
-skinparam dpi 300
-skinparam shadowing false
-skinparam monochrome true
-skinparam padding 5
-skinparam nodesep 80
-skinparam ranksep 80
-skinparam defaultTextAlignment center
-
-rectangle "<img:./images/dst-logotype-uk.png{scale=0.2}>" as dst
 rectangle "<img:./images/dst-data-cleaner-logotype.png{scale=0.2}>" as data_cleaner {
   process "Stage1" as stage1
   process "Stage2" as stage2
@@ -134,6 +106,8 @@ file "Dataset File\n<b>{name}-{year}.sas7bdat</b>" as dataset_year_file_sas
 file "Dataset File\n<b>{new_name}.csv</b>" as new_dataset_file_csv
 file "Dataset File\n<b>{name}-{year}.csv</b>" as dataset_year_file_csv
 
+natreg --> register_data : " Provides"
+register_data -RIGHT-> dst : " Sent to"
 dst --> stat_data : " Provides"
 stat_data -RIGHT-> dataset : " Consists of many"
 dataset --> dataset_year_file_sas : " Have many"
@@ -146,7 +120,236 @@ stage2 .RIGHT.> new_dataset_file_csv
 #+END_SRC
 
 #+ATTR_LATEX: :placement [H]
-#+RESULTS: domain-model2
-[[file:./images/domain-model2.png]]
+#+RESULTS: domain-model-pipeline
+[[file:./images/domain-model-pipeline.png]]
+
+#+LATEX: \end{center}
+
+
+* Datasets
+
+** Population
+
+#+LATEX: \vspace{0.5cm}
+#+LATEX: \begin{center}
+#+NAME: dataset-population
+#+ATTR_HTML: :style max-width: 100%;
+#+BEGIN_SRC plantuml :file ./images/dataset-population.png :exports results
+@startuml
+skinparam dpi 300
+skinparam shadowing false
+skinparam padding 5
+skinparam nodesep 80
+skinparam ranksep 80
+skinparam defaultTextAlignment center
+
+rectangle "Grunddata" as ext_data {
+  map "BEF\n<b>bef{year}12.sas7bdat</b>" as bef #05df72 {
+    PNR => Id of individual
+    MOR_ID => Id of individuals mother
+    FAR_ID => Id of individuals father
+    FOED_DAG => Birth date
+    IE_TYPE => Immigrantion status
+    KOEN => Sex
+    FOEDREG_KODE => Id of birth registering authority
+  }
+
+  map "DOD\n<b>dod2021.sas7bdat</b>" as dod #05df72 {
+    PNR => Id of individual
+    DODDATO => Date of death
+  }
+
+  map "BEFADR\n<b>befadr202203.sas7bdat</b>" as befadr #ff6467 {
+    PNR => Id of individual
+    KOM => Municipality code
+    ADRESSE_ID => Unique ID of address in Denmark
+  }
+
+  map "BEFBOP\n<b>befbop202112.sas7bdat</b>" as befbop #ff6467 {
+    PNR => Id of individual
+    ADRESSE_ID => Unique ID of address in Denmark
+    BOP_VTIL => Date of residency end
+  }
+}
+
+file "Oleguer script\n<b>population1986_2021_version_1.R</b>" as pop_r
+
+rectangle "New datasets" as new_datasets {
+  map "Population (1986 - 2021)\n<i>Only inviduals with most recent residency in Denmark</i>\n<i>No individuals that died before 1986" as pop {
+    pnr => Id of individual
+    pnrm => Id of individuals mother
+    pnrf => Id of individuals father
+    birth_d => Birth date
+    ie_type => Immigrantion status
+    sex => Sex
+    birth_place => Id of birth registering authority
+    birth_country => Greenland, Denmark, Unknown or Abroad
+    death_d => Date of death
+  }
+}
+
+bef --> pop_r
+befbop --> pop_r
+befadr --> pop_r
+dod --> pop_r
+pop_r --> pop
+@enduml
+#+END_SRC
+
+#+ATTR_LATEX: :placement [H]
+#+RESULTS: dataset-population
+[[file:./images/dataset-population.png]]
+
+#+LATEX: \end{center}
+
+** Hospital
+
+#+LATEX: \vspace{0.5cm}
+#+LATEX: \begin{center}
+#+NAME: dataset-hospital
+#+ATTR_HTML: :style max-width: 100%;
+#+BEGIN_SRC plantuml :file ./images/dataset-hospital.png :exports results
+@startuml
+skinparam dpi 300
+skinparam shadowing false
+skinparam padding 5
+skinparam nodesep 80
+skinparam ranksep 80
+skinparam defaultTextAlignment center
+
+rectangle "Eksterne data" as ext_data {
+  rectangle "lpr2_adm\n<b>20220908_FraSDS</b>\n<b>t_adm.sas7bdat</b>" as lpr2_adm #ff6467
+  rectangle "lpr2_diag\n<b>20220908_FraSDS</b>\n<b>t_diag.sas7bdat</b>" as lpr2_diag #ff6467
+  rectangle "psyc_adm1968\n<b>20220908_FraSDS</b>\n<b>patient_icd8.sas7bdat</b>" as psyc_adm1968 #ff6467
+  rectangle "psyc_adm1994\n<b>20220908_FraSDS</b>\n<b>patient_icd10.sas7bdat</b>" as psyc_adm1994 #ff6467
+  rectangle "psyc_diag1994\n<b>20220908_FraSDS</b>\n<b>diag_icd10.sas7bdat</b>" as psyc_diag1994 #ff6467
+  rectangle "psyc_adm1995\n<b>20220908_FraSDS</b>\n<b>t_psyk_adm.sas7bdat</b>" as psyc_adm1995 #ff6467
+  rectangle "psyc_diag1995\n<b>20220908_FraSDS</b>\n<b>t_psyk_diag.sas7bdat</b>" as psyc_diag1995 #ff6467
+  rectangle "lpr3_adm\n<b>20220908_FraSDS</b>\n<b>kontakter.sas7bdat</b>" as lpr3_adm #ff6467
+  rectangle "lpr3_diag\n<b>20220908_FraSDS</b>\n<b>diagnoser.sas7bdat</b>" as lpr3_diag #ff6467
+}
+
+rectangle "New datasets" as new_datasets {
+  map "Diagnoses" as diag {
+    pnr => Id of individual
+    sex => Sex
+    birth_d => Birth date
+    date_dx => Date of medical record start / diagnosis date
+    date_ending => Date of medical record end
+    type_patient => Patient type (inpation, outpatient, etc.)
+    length_hours => Hours between <i>date_dx</i> and <i>date_ending</i>
+    diag => ICD-code of diagnosis
+    type_diag => Diagnosis type (main, auxiliary, referral, etc.)
+    recnum => Medical record ID
+    lpr => Register origin (2 = LPR2, 3 = LPR3)
+    hosp_type => Hospital type (psychiatric or somatic)
+  }
+
+  map "Population (1986 - 2021)\n<i>Only inviduals with most recent residency in Denmark</i>\n<i>No individuals that died before 1986" as pop {
+    pnr => Id of individual
+    pnrm => Id of individuals mother
+    pnrf => Id of individuals father
+    birth_d => Birth date
+    ie_type => Immigrantion status
+    sex => Sex
+    birth_place => Id of birth registering authority
+    birth_country => Greenland, Denmark, Unknown or Abroad
+    death_d => Date of death
+  }
+}
+
+file "Oleguer script\n<b>hospital2021_version_2.R</b>" as hospital_r
+
+lpr2_adm --> hospital_r
+lpr2_adm --> hospital_r
+lpr2_diag --> hospital_r
+psyc_adm1968 --> hospital_r
+psyc_adm1994 --> hospital_r
+psyc_diag1994 --> hospital_r
+psyc_adm1995 --> hospital_r
+psyc_diag1995 --> hospital_r
+lpr3_adm --> hospital_r
+lpr3_diag --> hospital_r
+pop --> hospital_r
+hospital_r --> diag
+@enduml
+#+END_SRC
+
+#+ATTR_LATEX: :placement [H]
+#+RESULTS: dataset-hospital
+[[file:./images/dataset-hospital.png]]
+
+#+LATEX: \end{center}
+
+** Cause of death
+
+#+LATEX: \vspace{0.5cm}
+#+LATEX: \begin{center}
+#+NAME: dataset-cause-of-death
+#+ATTR_HTML: :style max-width: 100%;
+#+BEGIN_SRC plantuml :file ./images/dataset-cause-of-death.png :exports results
+@startuml
+skinparam dpi 300
+skinparam shadowing false
+skinparam padding 5
+skinparam nodesep 80
+skinparam ranksep 80
+skinparam defaultTextAlignment center
+
+rectangle "Grunddata" as ext_data {
+  map "DOD\n<b>dod2021.sas7bdat</b>" as dod #05df72 {
+    PNR => Id of individual
+    DODDATO => Date of death
+  }
+
+  map "DODSAARS\n<b>dodsaars2001.sas7bdat</b>" as dodsaars #05df72 {
+    PNR => Id of individual
+    C_DOD1 => Cause of death as ICD-code
+    C_LISTE_14 => Cause of death as LISTE14 code
+  }
+
+  map "DODSAASG\n<b>dodsaasg2020.sas7bdat</b>" as dodsaasg #05df72 {
+    PNR => Id of individual
+    C_DODTILGRUNDL_ACME => Cause of death as ICD-code
+    C_LISTE_14 => Cause of death as LISTE14 code
+  }
+}
+
+file "Oleguer script\n<b>cod2020_version_1.R</b>" as cod_r
+
+rectangle "New datasets" as new_datasets {
+  map "Cause of death" as cod {
+    pnr => Id of individual
+    death_d => Date of death
+    cod => ICD-code of underlying cause of death
+    cod14 => Underlying cause of death as C_LISTE14 numeric code
+    cod11 => Underlying cause of death as 11 category numeric code
+    cod11_label => Underlying cause of death as 11 category label
+  }
+
+  map "Population (1986 - 2021)\n<i>Only inviduals with most recent residency in Denmark</i>\n<i>No individuals that died before 1986" as pop {
+    pnr => Id of individual
+    pnrm => Id of individuals mother
+    pnrf => Id of individuals father
+    birth_d => Birth date
+    ie_type => Immigrantion status
+    sex => Sex
+    birth_place => Id of birth registering authority
+    birth_country => Greenland, Denmark, Unknown or Abroad
+    death_d => Date of death
+  }
+}
+
+dod --> cod_r
+pop -UP-> cod_r
+dodsaars --> cod_r
+dodsaasg --> cod_r
+cod_r --> cod
+@enduml
+#+END_SRC
+
+#+ATTR_LATEX: :placement [H]
+#+RESULTS: dataset-cause-of-death
+[[file:./images/dataset-cause-of-death.png]]
 
 #+LATEX: \end{center}
