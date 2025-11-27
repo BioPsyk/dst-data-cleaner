@@ -81,7 +81,7 @@
 #+LATEX: \begin{center}
 #+NAME: domain-model1
 #+ATTR_HTML: :style max-width: 100%;
-#+BEGIN_SRC plantuml :file ./docs/images/domain-model1.png :exports results
+#+BEGIN_SRC plantuml :file ./images/domain-model1.png :exports results
 @startuml
 skinparam dpi 300
 skinparam shadowing false
@@ -100,7 +100,7 @@ skinparam rectangle<<image_holder>> {
 
 rectangle "National\nRegister" as natreg
 collections "Register\nData" as register_data
-rectangle "<img:docs/images/dst-logotype-uk.png{scale=0.2}>" <<image_holder>> as dst
+rectangle "<img:./images/dst-logotype-uk.png{scale=0.2}>" <<image_holder>> as dst
 collections "Statistical\nData" as stat_data
 actor "Researcher" as researcher
 
@@ -108,12 +108,13 @@ natreg --> register_data : " Provides"
 register_data -RIGHT-> dst : " Sent to"
 dst --> stat_data : " Provides"
 researcher -LEFT-> stat_data : "Uses"
+stat_data .UP.> register_data : " Created from"
 @enduml
 #+END_SRC
 
 #+ATTR_LATEX: :placement [H]
 #+RESULTS: domain-model1
-[[file:./docs/images/domain-model1.png]]
+[[file:./images/domain-model1.png]]
 
 #+LATEX: \end{center}
 
@@ -121,7 +122,7 @@ researcher -LEFT-> stat_data : "Uses"
 #+LATEX: \begin{center}
 #+NAME: domain-model2
 #+ATTR_HTML: :style max-width: 100%;
-#+BEGIN_SRC plantuml :file ./docs/images/domain-model2.png :exports results
+#+BEGIN_SRC plantuml :file ./images/domain-model2.png :exports results
 @startuml
 skinparam dpi 300
 skinparam shadowing false
@@ -158,6 +159,6 @@ dataset_file --> dataset_file_year
 
 #+ATTR_LATEX: :placement [H]
 #+RESULTS: domain-model2
-[[file:./docs/images/domain-model2.png]]
+[[file:./images/domain-model2.png]]
 
 #+LATEX: \end{center}
