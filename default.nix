@@ -1,13 +1,15 @@
-{ stdenv, lib, version, openssl, pkg-config, coreutils, writeShellApplication, glibc, locales, tzdata, shadow, netcat, pythonWithPackages, rWithPackages, nextflow }:
+{ stdenv, lib, version, openssl, datamash, pkg-config, coreutils, writeShellApplication, glibc, locales, tzdata, shadow, netcat, pythonWithPackages, rWithPackages, nextflow }:
 
 writeShellApplication rec {
   name = "dst-data-container-setup";
 
   runtimeInputs = [
     coreutils
+    datamash
     glibc.bin
     locales
     netcat
+    nextflow
     openssl
     pkg-config
     pythonWithPackages
@@ -18,7 +20,7 @@ writeShellApplication rec {
   ];
 
   text = ''
-    TMP_DIR="/tmp/pcs-docker-setup"
+    TMP_DIR="/tmp/dst-data-cleaner-docker-setup"
 
     rm -rf "''${TMP_DIR}"
     mkdir -p "''${TMP_DIR}"

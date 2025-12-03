@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 
-library(readr)
-library(dplyr)
-library(haven)
+suppressMessages(library(readr))
+suppressMessages(library(dplyr))
+suppressMessages(library(haven))
 
 usage <- function() {
 	message("csv-to-sas7bdat.R [INPUT_FILE] [OUTPUT_FILE]")

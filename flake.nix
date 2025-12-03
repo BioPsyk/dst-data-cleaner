@@ -33,7 +33,7 @@
 
       rWithPackages = pkgs.rWrapper.override{
         packages = with pkgs.rPackages; [
-          tidyverse dtplyr data_table rlang haven readr
+          tidyverse dtplyr data_table rlang haven readr plyr arrow rjson
         ];
       };
 
@@ -56,6 +56,7 @@
         buildInputs = with pkgs; [
           # Development releated packages
           openssl
+          datamash
           nextflow
           pkg-config
           packages."${system}".pythonWithPackages

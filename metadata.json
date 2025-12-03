@@ -3,13 +3,15 @@
     "BEF": {
       "columns": [
         "PNR",
+        "KOEN",
+        "FOED_DAG",
+        "FOEDREG_KODE",
         "MOR_ID",
         "FAR_ID",
         "FAMILIE_ID",
         "ADRESSE_ID",
-        "FOED_DAG",
-        "FOEDREG_KODE",
-        "KOEN"
+        "BOPIKOM",
+        "BOP_VFRA"
       ]
     },
     "LMDB": {

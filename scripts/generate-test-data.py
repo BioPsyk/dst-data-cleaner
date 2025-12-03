@@ -37,42 +37,39 @@ logger.addHandler(stream_handler)
 #-------------------------------------------------------------------------------
 # BEF
 
+def fake_bef_person(fake, gender, family, residency, mother=None, father=None):
+  if mother is None and father is None:
+    born_at = fake.past_date(start_date='-40y').strftime(DATE_FORMAT)
+  else:
+    born_at = fake.past_date(start_date='-20y').strftime(DATE_FORMAT)
+
+  return {
+    "PNR": fake.random_int(max=9999999),
+    "KOEN": gender,
+    "FOED_DAG": born_at,
+    "FOEDREG_KODE": fake.random_int(min=1, max=9999),
+    "MOR_ID": "" if mother is None else mother["PNR"],
+    "FAR_ID": "" if father is None else father["PNR"],
+    "FAMILIE_ID": family["id"],
+    "ADRESSE_ID": residency["id"],
+    "BOPIKOM": residency["municipality_id"],
+    "BOP_VFRA": residency["starts_at"],
+  }
+
 def fake_bef_family(fake):
-  family_id = fake.random_int(max=9999999)
-  address_id = fake.random_int(max=9999999)
-
-  mother = {
-    "PNR": fake.random_int(max=9999999),
-    "MOR_ID": "",
-    "FAR_ID": "",
-    "FAMILIE_ID": family_id,
-    "ADRESSE_ID": address_id,
-    "FOED_DAG": fake.past_date(start_date='-40y').strftime(DATE_FORMAT),
-    "FOEDREG_KODE": fake.random_int(min=1, max=9999),
-    "KOEN": 2,
+  family = {
+    "id": fake.random_int(max=9999999)
   }
 
-  father = {
-    "PNR": fake.random_int(max=9999999),
-    "MOR_ID": "",
-    "FAR_ID": "",
-    "FAMILIE_ID": family_id,
-    "ADRESSE_ID": address_id,
-    "FOED_DAG": fake.past_date(start_date='-40y').strftime(DATE_FORMAT),
-    "FOEDREG_KODE": fake.random_int(min=1, max=9999),
-    "KOEN": 1,
+  residency = {
+    "id": fake.random_int(max=9999999),
+    "municipality_id": fake.random_int(max=9999999),
+    "starts_at": fake.past_date(start_date='-10y').strftime(DATE_FORMAT)
   }
 
-  child = {
-    "PNR": fake.random_int(max=9999999),
-    "MOR_ID": mother["PNR"],
-    "FAR_ID": father["PNR"],
-    "FAMILIE_ID": family_id,
-    "ADRESSE_ID": address_id,
-    "FOED_DAG": fake.past_date(start_date='-20y').strftime(DATE_FORMAT),
-    "FOEDREG_KODE": fake.random_int(min=1, max=9999),
-    "KOEN": fake.random_int(min=1, max=2),
-  }
+  mother = fake_bef_person(fake, 2, family, residency)
+  father = fake_bef_person(fake, 1, family, residency)
+  child  = fake_bef_person(fake, fake.random_int(min=1, max=2), family, residency, mother, father)
 
   return [mother, father, child]
 

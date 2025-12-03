@@ -5,18 +5,18 @@
 
 process sas7bdatToCsv {
   input:
-  tuple path(sas_file), val(name), val(year), val(columns)
+  tuple val(name), val(year), path(input_file), val(columns)
 
   output:
-  tuple path(csv_file), val(name), val(year)
+  tuple val(name), val(year), path(output_file)
 
   script:
-  csv_file = "${name}-${year}.csv"
+  output_file = "${name}-${year}.csv"
   """
   sas7bdat-to-csv.R \
-    "${sas_file}"  \
+    "${input_file}"  \
     "${columns.join(",")}" \
-    "${csv_file}"
+    "${output_file}"
   """
 }
 
@@ -40,7 +40,7 @@ def attachMetadata(metadata, f) {
   if (!md) md = metadata[name.toUpperCase()]
   if (!md) return null
 
-  return [f, name, year, md["columns"]]
+  return [name, year, f, md["columns"]]
 }
 
 //---------------------------------------------------------------------------------
@@ -56,16 +56,9 @@ workflow stage1 {
     sas7bdatToCsv |
     set{ yearlyCsvFiles }
 
-  yearlyCsvFiles |
-    // We only need the file and the dataset name
-    map(it -> it[0..1]) |
-    // Group all the files by dataset name
-    groupTuple(by: 1) |
-    view
-
   emit:
   yearlyCsvFiles
 
   publish:
-  yearlyCsvFiles >> "stage1/csv"
+  yearlyCsvFiles >> "stage1"
 }

@@ -10,3 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Initial project structure
+
+## [0.1.0]
+
+### Added
+
+- Stage 2:
+    - Derivation of new population dataset
