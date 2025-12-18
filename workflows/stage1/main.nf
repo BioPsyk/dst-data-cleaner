@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------------
 // Processes
 
-process sas7bdatToCsv {
+process yearlySas7bdatToCsv {
   input:
   tuple val(name), val(year), path(input_file), val(columns)
 
@@ -20,11 +20,28 @@ process sas7bdatToCsv {
   """
 }
 
+process externalSas7bdatToCsv {
+  input:
+  tuple val(name), path(input_file), val(columns)
+
+  output:
+  tuple val(name), path(output_file)
+
+  script:
+  output_file = "${name}.csv"
+  """
+  sas7bdat-to-csv.R \
+    "${input_file}"  \
+    "${columns.join(",")}" \
+    "${output_file}"
+  """
+}
+
 //---------------------------------------------------------------------------------
 // Helpers
 
-def attachMetadata(metadata, f) {
-  def matcher = f.getBaseName() =~ /^(?<name>[A-Za-z]+)(?<year>[0-9]+)$/;
+def attachYearlyMetadata(metadata, f) {
+  def matcher = f.getBaseName() =~ /^(?<name>[A-Za-z_]+)(?<year>[0-9]+)$/;
 
   if (!matcher.matches()) {
     throw new Exception(
@@ -43,22 +60,41 @@ def attachMetadata(metadata, f) {
   return [name, year, f, md["columns"]]
 }
 
+def attachExternalMetadata(metadata, f) {
+  def name = f.getBaseName()
+  def md   = metadata[name]
+
+  // Try again, but with all lower case
+  if (!md) md = metadata[name.toLowerCase()]
+  if (!md) return null
+
+  return [name, f, md["columns"]]
+}
+
 //---------------------------------------------------------------------------------
 
 workflow stage1 {
   take:
   metadata
   yearlySasFiles
+  externalSasFiles
 
   main:
   yearlySasFiles |
-    map(it -> attachMetadata(metadata, it)) |
-    sas7bdatToCsv |
+    map(it -> attachYearlyMetadata(metadata, it)) |
+    yearlySas7bdatToCsv |
     set{ yearlyCsvFiles }
+
+  externalSasFiles |
+    map(it -> attachExternalMetadata(metadata, it)) |
+    externalSas7bdatToCsv |
+    set{ externalCsvFiles }
 
   emit:
   yearlyCsvFiles
+  externalCsvFiles
 
   publish:
-  yearlyCsvFiles >> "stage1"
+  yearlyCsvFiles >> "stage1/grund"
+  externalCsvFiles >> "stage1/external"
 }

@@ -1,6 +1,6 @@
 {
   "stage1": {
-    "BEF": {
+    "bef": {
       "columns": [
         "PNR",
         "KOEN",
@@ -14,7 +14,7 @@
         "BOP_VFRA"
       ]
     },
-    "LMDB": {
+    "lmdb": {
       "columns": [
         "PNR",
         "ATC",
@@ -26,6 +26,82 @@
         "STRNUM",
         "STRUNIT",
         "DOSFORM"
+      ]
+    },
+    "lpr_adm": {
+      "columns": [
+        "RECNUM",
+        "PNR",
+        "C_PATTYPE",
+        "D_INDDTO",
+        "D_UDDTO"
+      ]
+    },
+    "lpr_diag": {
+      "columns": [
+        "RECNUM",
+        "C_DIAG",
+        "C_DIAGTYPE"
+      ]
+    },
+    "psyk_adm": {
+      "columns": [
+        "RECNUM",
+        "PNR",
+        "C_PATTYPE",
+        "D_INDDTO",
+        "D_UDDTO"
+      ]
+    },
+    "psyk_diag": {
+      "columns": [
+        "RECNUM",
+        "C_DIAG",
+        "C_DIAGTYPE"
+      ]
+    },
+    "lpr_f_kontakter": {
+      "columns": [
+        "DW_EK_KONTAKT",
+        "PNR",
+        "KONTAKTTYPE",
+        "DATO_START",
+        "DATO_SLUT"
+      ]
+    },
+    "lpr_f_diagnoser": {
+      "columns": [
+        "DW_EK_KONTAKT",
+        "DIAGNOSEKODE",
+        "DIAGNOSEKODE_PARENT",
+        "DIAGNOSETYPE"
+      ]
+    },
+    "patient_icd8": {
+      "columns": [
+        "PAT_SEQ",
+        "CPRNR",
+        "PTTYPE",
+        "INDLDATO",
+        "UDSKDATO",
+        "HOVEDDIAG",
+        "DART"
+      ]
+    },
+    "patient_icd10": {
+      "columns": [
+        "PAT_SEQ",
+        "CPRNR",
+        "PTTYPE",
+        "INDLDATO",
+        "UDSKDATO"
+      ]
+    },
+    "diag_icd10": {
+      "columns": [
+        "PAT_SEQ",
+        "DIAG",
+        "DART"
       ]
     }
   }
