@@ -55,25 +55,35 @@ These are the new datasets that are derived in stage 2 of the pipeline:
 
 ### Population
 
-![Population dataset diagram](./docs/images/dataset-population.png)
+Population contains one row for each unique individual in the population. Each row has the following columns:
 
-### Hospital
+| Index | Name          | Description                                             |
+|-------|---------------|---------------------------------------------------------|
+| 0     | person_id     | Unique (population wide) ID of the person               |
+| 1     | gender        | Gender of the person                                    |
+| 2     | born_at       | Birthdate of person, in the format YYYY-MM-DD.          |
+| 3     | birthplace_id | ID of the location where the person was born.           |
+| 4     | mother_id     | ID of the persons mother (legal, not biological).       |
+| 5     | father_id     | ID of the persons father (legal, not biological).       |
+| 6     | family_id     | ID of the family that the person belongs to.            |
+| 7     | source_file   | Name of the dataset file that this row originates from. |
 
-![Hospital dataset diagram](./docs/images/dataset-hospital.png)
+### Diagnoses
 
-### Cause of death
+Population contains one row for each distinct diagnosis made in the Danish healthcare system. Each row has the following columns:
 
-![Cause of death dataset diagram](./docs/images/dataset-cause-of-death.png)
-
-## Project overview 👀
-
-TBD
-
-## Quick Start 🚀
-
-
-TBD
+| Index | Name                  | Description                                                                                                                     |
+|-------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| 0     | person_id             | Unique (population wide) ID of the person that was diagnosed                                                                    |
+| 1     | record_id             | Unique (register wide) ID of the medical record which the diagnosis belongs to                                                  |
+| 2     | patient_kind          | Code for the kind of patient the medical record was created as. Note that different codes were used by the different registers. |
+| 3     | starts_at             | Starting date of medical record                                                                                                 |
+| 4     | ends_at               | Ending date of medical record                                                                                                   |
+| 5     | diagnosis_id          | SKS-code (D-code) or ICD-8 code for the diagnosis                                                                               |
+| 6     | diagnosis_kind        | Code for the kind of diagnosis made. Note that different codes were used by the different registers.                            |
+| 7     | record_source_file    | Name of the dataset file that the medical record data of this row originates from.                                              |
+| 8     | diagnosis_source_file | Name of the dataset file that the diagnosis data of this row originates from.                                                   |
 
 ## Support 💬
 
-If you have any questions, suggestions, or need assistance, please open a GitHub issue.
+If you have any questions, suggestions, or need assistance, please [open a GitHub Issue](https://github.com/BioPsyk/dst-data-cleaner/issues/new).

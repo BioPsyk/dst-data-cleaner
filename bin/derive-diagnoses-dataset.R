@@ -71,7 +71,9 @@ processDatasetGroup <- function(results, group, records_columns, diagnoses_colum
       records_path,
       show_col_types=FALSE,
       col_select=any_of(unlist(records_columns, use.names=FALSE))
-    ) |> rename(!!!records_columns)
+    ) |>
+      rename(!!!records_columns) |>
+      mutate(record_id = as.character(record_id))
 
     min_year <- min(records$starts_at)
     max_year <- max(records$starts_at)
@@ -89,7 +91,8 @@ processDatasetGroup <- function(results, group, records_columns, diagnoses_colum
       diagnoses_path,
       show_col_types=FALSE,
       col_select=any_of(unlist(diagnoses_columns, use.names=FALSE))
-    ) |> rename(!!!diagnoses_columns)
+    ) |> rename(!!!diagnoses_columns) |>
+      mutate(record_id = as.character(record_id))
 
     output <- inner_join(
       records,
@@ -126,7 +129,7 @@ results <- processDatasetGroup(
   list(
     record_id = "PAT_SEQ",
     diagnosis_id = "HOVEDDIAG",
-    diagnosis_kind = "DART"
+    diagnosis_kind = "MODIFHD"
   )
 )
 

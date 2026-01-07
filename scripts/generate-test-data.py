@@ -128,7 +128,7 @@ def fake_pcr_patient_icd8_record(fake, bef_person):
     "INDLDATO": start_date,
     "UDSKDATO": end_date,
     "HOVEDDIAG": fake.random_element(elements=["00999", "11609", "42009"]),
-    "DART": fake.random_element(elements=["0", "A", "B", "G", "H"])
+    "MODIFHD": fake.random_int(max=9)
   }
 
 def fake_pcr_patient_icd8_dataset(fake, bef_datasets):

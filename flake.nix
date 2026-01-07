@@ -37,10 +37,6 @@
         ];
       };
 
-      psemau-data-management = pkgs.callPackage ./nix/psemau-data-management/default.nix {
-        inherit (pkgs);
-      };
-
       default = pkgs.callPackage ./default.nix {
         inherit version;
         inherit locales;
@@ -61,7 +57,6 @@
           pkg-config
           packages."${system}".pythonWithPackages
           packages."${system}".rWithPackages
-          packages."${system}".psemau-data-management
         ];
       };
     });
