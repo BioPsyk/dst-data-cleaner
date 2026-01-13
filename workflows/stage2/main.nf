@@ -8,29 +8,47 @@ process derivePopulationDataset {
   tuple val(input_name), val(input_years), val(input_files)
 
   output:
-  tuple path("${output_prefix}.csv"), path("${output_prefix}_metadata.json")
+  tuple file("${output_prefix}.csv"), file("${output_prefix}_metadata.json")
 
   script:
   input_args    = input_years.withIndex().collect{ year, i -> "${year}:${input_files[i]}" }.join(" ")
-  first_year    = Collections.min(input_years)
-  last_year     = Collections.max(input_years)
-  output_prefix = "population_${first_year}-${last_year}"
+  output_prefix = "population"
   """
-  derive-population-dataset.R "${output_prefix}" ${input_args}
+  derive-population-dataset.R "tmp" ${input_args}
+
+  sort -t, -n -k1 "tmp.csv" > "${output_prefix}.csv"
+  mv "tmp_metadata.json" "${output_prefix}_metadata.json"
   """
 }
 
 process deriveDiagnosesDataset {
   input:
-  file(metadata)
+  file(input_metadata)
 
   output:
-  tuple path("${output_prefix}.csv"), path("${output_prefix}_metadata.json")
+  tuple file("${output_prefix}.csv"), file("${output_prefix}_metadata.json")
 
   script:
   output_prefix = "diagnoses"
   """
-  derive-diagnoses-dataset.R "${output_prefix}" "${metadata}"
+  derive-diagnoses-dataset.R "tmp" "${input_metadata}"
+
+  sort -t, -n -k1,2 "tmp.csv" > "${output_prefix}.csv"
+  mv "tmp_metadata.json" "${output_prefix}_metadata.json"
+  """
+}
+  process deriveDispensedPrescriptionsDataset {
+  input:
+  tuple val(input_name), val(input_years), val(input_files)
+
+  output:
+  tuple path("${output_prefix}-*.csv"), file("${output_prefix}_metadata.json")
+
+  script:
+  input_args    = input_files.collect{ f -> "\"${f}\"" }.join(" ")
+  output_prefix = "dispensed_prescriptions"
+  """
+  derive-dispensed-prescriptions-dataset.sh ${input_args}
   """
 }
 
@@ -127,7 +145,7 @@ workflow stage2 {
   groupedCsvFiles |
     concat(
       externalCsvFiles.map(it -> [it[0], [0], [it[1]]] ) // Makes sure the tuple structure is the same
-                                                        // as for yearly files for easier processing in 'createDiagnosesMetadata'
+                                                         // as for yearly files for easier processing in 'createDiagnosesMetadata'
     ) |
     toList |
     map(it -> createDiagnosesMetadata(it)) |
@@ -136,11 +154,18 @@ workflow stage2 {
     deriveDiagnosesDataset |
     set { diagnosesFiles }
 
+  groupedCsvFiles |
+    filter{ it[0] == "lmdb" } |
+    deriveDispensedPrescriptionsDataset |
+    set { dispensedPrescriptionsFiles }
+
   emit:
   populationFiles
   diagnosesFiles
+  dispensedPrescriptionsFiles
 
   publish:
   populationFiles >> "stage2"
   diagnosesFiles >> "stage2"
+  dispensedPrescriptionsFiles >> "stage2"
 }

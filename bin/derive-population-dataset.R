@@ -61,6 +61,11 @@ years_desc <- str_sort(names(input_files), decreasing = TRUE, numeric = TRUE)
 
 population <- NULL
 
+results <- list(
+  first_year = "9999-12-31",
+  last_year  = "0001-01-01"
+)
+
 for (year in years_desc) {
   input_file <- input_files[[year]]
 
@@ -92,6 +97,17 @@ for (year in years_desc) {
       gender = ifelse(gender == "1", "m", "f")
     )
 
+  min_year <- min(input_rows$born_at)
+  max_year <- max(input_rows$born_at)
+
+  if (min_year < results$first_year) {
+    results$first_year <- min_year
+  }
+
+  if (max_year > results$last_year) {
+    results$last_year <- max_year
+  }
+
   if (is.null(population)) {
     population <- input_rows
     next
@@ -119,20 +135,20 @@ metadata <- list(
   key         = basename(output_prefix),
   title       = "population",
   description = sprintf(
-    "Contains every person registered in the Danish Civil Registration System in the period (YYYYMM) %s to %s.
+    "Contains every person registered in the Danish Civil Registration System in the period %s to %s.
 Every person appears once in this dataset, with an unique value in the `person_id` column.",
-    first_year,
-    last_year
+    results$first_year,
+    results$last_year
   ),
   file_format = list(
     extension  = "csv",
     type       = "text",
     delimiter  = ",",
     quote      = "\"",
-    linebreaks = "\n",
-    size = nrow(population),
-    sorted_by = c("person_id")
+    linebreaks = "\n"
   ),
+  size = nrow(population),
+  sorted_by = c("person_id"),
   columns = list(
     person_id = list(
       index = 0,

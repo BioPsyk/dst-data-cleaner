@@ -55,7 +55,7 @@ These are the new datasets that are derived in stage 2 of the pipeline:
 
 ### Population
 
-Population contains one row for each unique individual in the population. Each row has the following columns:
+This dataset contains one row for each unique individual in the population. Each row has the following columns:
 
 | Index | Name          | Description                                             |
 |-------|---------------|---------------------------------------------------------|
@@ -70,7 +70,7 @@ Population contains one row for each unique individual in the population. Each r
 
 ### Diagnoses
 
-Population contains one row for each distinct diagnosis made in the Danish healthcare system. Each row has the following columns:
+This dataset contains one row for each distinct diagnosis made in the Danish healthcare system. Each row has the following columns:
 
 | Index | Name                  | Description                                                                                                                     |
 |-------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|
@@ -83,6 +83,24 @@ Population contains one row for each distinct diagnosis made in the Danish healt
 | 6     | diagnosis_kind        | Code for the kind of diagnosis made. Note that different codes were used by the different registers.                            |
 | 7     | record_source_file    | Name of the dataset file that the medical record data of this row originates from.                                              |
 | 8     | diagnosis_source_file | Name of the dataset file that the diagnosis data of this row originates from.                                                   |
+
+### Dispensed prescriptions
+
+This dataset contains one row for each prescription made in the Danish healthcare system that was dispensed. In this context, "dispensed" means that the patient went to the pharmacy to pick up a medicine that was prescribed to them. This dataset does not contain prescriptions that haven't been dispensed/picked up by the patient.
+
+| Index | Name             | Description                                        |
+|-------|------------------|----------------------------------------------------|
+| 0     | person_id        | Civil Personal Register (CPR) number               |
+| 1     | atc_id           | WHO-defined Anatomical Therapeutical Chemical code |
+| 2     | ibnr_id          | Identifier for the dispensing pharmacy             |
+| 3     | dispensed_at     | Date when prescription was dispensed               |
+| 4     | volume           | Number of defined daily doses per package          |
+| 5     | volume_type_code | Unit used for a dose                               |
+| 6     | pack_size        | Number of tablets/units per package                |
+| 7     | strength         | Numerical strength per tablet/unit                 |
+| 8     | strength_unit    | Unit used for strength                             |
+| 9     | dosage_form      | Formulation of the drug                            |
+| 10    | source_file      | File that row originates from                      |
 
 ## Support 💬
 

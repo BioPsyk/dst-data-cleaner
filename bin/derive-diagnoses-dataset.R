@@ -41,7 +41,6 @@ empty_output <- data.frame(
   patient_kind          = character(),
   starts_at             = character(),
   ends_at               = character(),
-  record_id             = character(),
   diagnosis_id          = character(),
   diagnosis_kind        = character(),
   record_source_file    = character(),
@@ -76,7 +75,7 @@ processDatasetGroup <- function(results, group, records_columns, diagnoses_colum
       mutate(record_id = as.character(record_id))
 
     min_year <- min(records$starts_at)
-    max_year <- max(records$starts_at)
+    max_year <- max(records$ends_at)
 
     if (min_year < results$first_year) {
       results$first_year <- min_year
@@ -219,10 +218,10 @@ metadata <- list(
     type       = "text",
     delimiter  = ",",
     quote      = "\"",
-    linebreaks = "\n",
-    size = results$total_rows,
-    sorted_by = c("starts_at")
+    linebreaks = "\n"
   ),
+  size = results$total_rows,
+  sorted_by = c("person_id", "record_id"),
   columns = list(
     person_id = list(
       index = 0,

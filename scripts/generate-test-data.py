@@ -15,7 +15,7 @@ from faker import Faker
 # Constants
 
 SCRIPT_NAME = "generate-test-data"
-DATE_FORMAT = "%Y%m%d"
+DATE_FORMAT = "%Y-%m-%d"
 PROJECT_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 
 #-------------------------------------------------------------------------------
