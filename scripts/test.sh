@@ -7,8 +7,6 @@ project_dir=$(dirname "${script_dir}")
 
 cd "${project_dir}"
 
-mkdir -p .nextflow
-
 echo ">> Building docker image"
 ./scripts/docker-build.sh
 

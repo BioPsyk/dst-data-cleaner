@@ -9,8 +9,6 @@ cd "${project_dir}"
 
 source "${script_dir}/init-containerization.sh"
 
-mkdir -p .nextflow
-
 echo ">> Building docker image"
 ./scripts/docker-build.sh
 
@@ -23,12 +21,12 @@ packaging_dir="${project_dir}/tmp/packaging"
 
 rm -rf "${packaging_dir}"
 
-mkdir -p "${packaging_dir}/"{tmp,.nextflow,scripts,work}
+mkdir -p "${packaging_dir}/"{tmp}
 
 cp bin "${packaging_dir}/" -R
-cp lib "${packaging_dir}/" -R
+cp modules "${packaging_dir}/" -R
 cp workflows "${packaging_dir}/" -R
-cp main.nf "${packaging_dir}/"
+cp main.nu "${packaging_dir}/"
 cp metadata.json "${packaging_dir}/"
 cp ./scripts/singularity-run.sh "${packaging_dir}/scripts/"
 cp ./scripts/init-containerization.sh "${packaging_dir}/scripts/"

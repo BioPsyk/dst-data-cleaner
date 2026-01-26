@@ -1,6 +1,6 @@
 /tmp
 /work
+/test/data
 
 result
-.nextflow*
 *.html

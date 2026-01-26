@@ -1,4 +1,4 @@
-{ stdenv, lib, version, openssl, datamash, pkg-config, coreutils, writeShellApplication, glibc, locales, tzdata, shadow, netcat, pythonWithPackages, rWithPackages, nextflow }:
+{ stdenv, lib, version, openssl, datamash, pkg-config, coreutils, writeShellApplication, glibc, locales, tzdata, shadow, netcat, pythonWithPackages, rWithPackages, nushell }:
 
 writeShellApplication rec {
   name = "dst-data-container-setup";
@@ -9,7 +9,7 @@ writeShellApplication rec {
     glibc.bin
     locales
     netcat
-    nextflow
+    nushell
     openssl
     pkg-config
     pythonWithPackages

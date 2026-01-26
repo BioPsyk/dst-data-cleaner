@@ -5,7 +5,7 @@
   ![Logotype](./docs/images/dst-data-cleaner-logotype.png)
 
   <p align="center">
-    <strong>Dst-data-cleaner is a <a href="https://www.nextflow.io/">Nextflow</a> pipeline that cleans datasets provided by <a href="https://www.dst.dk/en/">Statistics Denmark</a></strong>
+    <strong>Dst-data-cleaner is a <a href="https://www.nushell.sh/">Nushell</a> pipeline that cleans datasets provided by <a href="https://www.dst.dk/en/">Statistics Denmark</a></strong>
   </p>
 
 </div>
@@ -101,6 +101,14 @@ This dataset contains one row for each prescription made in the Danish healthcar
 | 8     | strength_unit    | Unit used for strength                             |
 | 9     | dosage_form      | Formulation of the drug                            |
 | 10    | source_file      | File that row originates from                      |
+
+### Incomes
+
+This dataset contains each income year per unique individual in the population. Each row has the following columns:
+
+### Family incomes
+
+This dataset contains each income year per family in the population. Each row has the following columns:
 
 ## Support 💬
 

@@ -15,15 +15,13 @@ function format_mount_flags() {
 cd "${project_dir}"
 
 mounts=(
-  ".nextflow"
   "bin"
   "lib"
-  "main.nf"
+  "main.nu"
   "metadata.json"
   "test"
   "tmp"
-  "work"
-  "workflows"
+  "modules"
 )
 
 docker_image_tag="dst-data-cleaner:"$(cat "./VERSION")

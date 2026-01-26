@@ -6,8 +6,10 @@ import argparse
 import datetime
 import csv
 import json
+import sys
 from subprocess import check_call
 from collections import OrderedDict
+from dateutil.relativedelta import relativedelta
 
 from faker import Faker
 
@@ -110,6 +112,74 @@ def fake_lmdb_dataset(fake, bef_dataset):
       result.append(
         fake_lmdb_prescription(fake, row)
       )
+
+  return result
+
+#-------------------------------------------------------------------------------
+# IND dataset
+
+def fake_ind_record(fake, bef_person, period_date):
+  birth_date             = datetime.datetime.strptime(bef_person["FOED_DAG"], DATE_FORMAT)
+  relative_age           = relativedelta(period_date, birth_date).years
+  employment_income      = fake.random_int(min=0, max=999999)
+  social_income          = fake.random_int(min=0, max=999999)
+  private_pension_income = fake.random_int(min=0, max=999999) if relative_age > 65 else 0
+  rest_income            = fake.random_int(min=0, max=999999)
+  all_income             = employment_income + social_income + private_pension_income + rest_income
+  total_taxes            = all_income * 0.38
+
+  return {
+    "PNR": bef_person["PNR"],
+    "ALDER_ULT_INK": relative_age,
+    "BESKST13": "08",
+    "OMFANG": 1,
+    "PERINDKIALT_13": employment_income + social_income + private_pension_income + rest_income,
+    "ERHVERVSINDK_13": employment_income,
+    "OFF_OVERFORSEL_13": social_income,
+    "PRIVAT_PENSION_13": private_pension_income,
+    "RESUINK_13": rest_income,
+    "SKATTOT_13": total_taxes
+  }
+
+def fake_ind_dataset(fake, bef_dataset, period_date):
+  result = []
+
+  for row in bef_dataset:
+    result.append(
+      fake_ind_record(fake, row, period_date)
+    )
+
+  return result
+
+#-------------------------------------------------------------------------------
+# FAIK dataset
+
+def fake_faik_record(fake, family, period_date):
+  employment_income      = fake.random_int(min=0, max=999999)
+  social_income          = fake.random_int(min=0, max=999999)
+  private_pension_income = fake.random_int(min=0, max=999999)
+  rest_income            = fake.random_int(min=0, max=999999)
+  all_income             = employment_income + social_income + private_pension_income + rest_income
+  total_taxes            = all_income * 0.38
+
+  return {
+    "FAMILIE_ID": family[0]["FAMILIE_ID"],
+    "FAMTYPE": 1,
+    "FAMINDKOMSTIALT_13": employment_income + social_income + private_pension_income + rest_income,
+    "FAMERHVERVSINDK_13": employment_income,
+    "FAMOFF_OVERFORSEL_13": social_income,
+    "FAMPRIVAT_PENSION_13": private_pension_income,
+    "FAMRESTINDK_13": rest_income,
+    "FAMSKATTOT_13": total_taxes
+  }
+
+def fake_faik_dataset(fake, families_dataset, period_date):
+  result = []
+
+  for _, row in families_dataset.items():
+    result.append(
+      fake_faik_record(fake, row, period_date)
+    )
 
   return result
 
@@ -342,6 +412,20 @@ def fake_lpr3_kontakter_diagnoser_dataset(fake, bef_dataset):
 
   return (kontakter_result, diagnoser_result)
 
+def mk_families_dataset(bef_dataset):
+  result = {}
+  id_col = "FAMILIE_ID"
+
+  for row in bef_dataset:
+    family_id = row[id_col]
+
+    if family_id in result:
+      result[family_id].append(row)
+    else:
+      result[family_id] = [row]
+
+  return result
+
 #-------------------------------------------------------------------------------
 # Utilities
 
@@ -374,21 +458,32 @@ def main(args):
   if args.random_seed:
     fake.seed_instance(args.random_seed)
 
-  for year in ["198512", "198612"]:
+  for year in [1985, 1986]:
+    period = f"{year}12"
+    period_date = datetime.datetime(year, 12, 31, 23, 59, 59)
+
     bef_dataset  = fake_bef_dataset(fake, args.bef_families_count)
     lmdb_dataset = fake_lmdb_dataset(fake, bef_dataset)
+    ind_dataset  = fake_ind_dataset(fake, bef_dataset, period_date)
+
+    families_dataset = mk_families_dataset(bef_dataset)
+
+    faik_dataset  = fake_faik_dataset(fake, families_dataset, period_date)
+
     (lpr2_adm_dataset, lpr2_diag_dataset) = fake_lpr2_adm_diag_dataset(fake, bef_dataset)
     (lpr3_kontakter_dataset, lpr3_diagnoser_dataset) = fake_lpr3_kontakter_diagnoser_dataset(fake, bef_dataset)
     (psyk_adm_dataset, psyk_diag_dataset) = fake_psyk_adm_diag_dataset(fake, bef_dataset)
 
-    bef_cols  = write_dataset(bef_dataset, args.grund_data_dir, f"bef{year}")
-    lmdb_cols = write_dataset(lmdb_dataset, args.grund_data_dir, f"lmdb{year}")
-    lpr2_adm_cols = write_dataset(lpr2_adm_dataset, args.grund_data_dir, f"lpr_adm{year}")
-    lpr2_diag_cols = write_dataset(lpr2_diag_dataset, args.grund_data_dir, f"lpr_diag{year}")
-    lpr3_kontakter_cols = write_dataset(lpr3_kontakter_dataset, args.grund_data_dir, f"lpr_f_kontakter{year}")
-    lpr3_diagnoser_cols = write_dataset(lpr3_diagnoser_dataset, args.grund_data_dir, f"lpr_f_diagnoser{year}")
-    psyk_adm_cols = write_dataset(psyk_adm_dataset, args.grund_data_dir, f"psyk_adm{year}")
-    psyk_diag_cols = write_dataset(psyk_diag_dataset, args.grund_data_dir, f"psyk_diag{year}")
+    bef_cols            = write_dataset(bef_dataset, args.grund_data_dir, f"bef{period}")
+    lmdb_cols           = write_dataset(lmdb_dataset, args.grund_data_dir, f"lmdb{period}")
+    ind_cols            = write_dataset(ind_dataset, args.grund_data_dir, f"ind{period}")
+    faik_cols           = write_dataset(faik_dataset, args.grund_data_dir, f"faik{period}")
+    lpr2_adm_cols       = write_dataset(lpr2_adm_dataset, args.grund_data_dir, f"lpr_adm{period}")
+    lpr2_diag_cols      = write_dataset(lpr2_diag_dataset, args.grund_data_dir, f"lpr_diag{period}")
+    lpr3_kontakter_cols = write_dataset(lpr3_kontakter_dataset, args.grund_data_dir, f"lpr_f_kontakter{period}")
+    lpr3_diagnoser_cols = write_dataset(lpr3_diagnoser_dataset, args.grund_data_dir, f"lpr_f_diagnoser{period}")
+    psyk_adm_cols       = write_dataset(psyk_adm_dataset, args.grund_data_dir, f"psyk_adm{period}")
+    psyk_diag_cols      = write_dataset(psyk_diag_dataset, args.grund_data_dir, f"psyk_diag{period}")
 
   # These datasets are not divided by year
   pcr_patient_icd8_dataset = fake_pcr_patient_icd8_dataset(fake, bef_dataset)
@@ -411,6 +506,12 @@ def main(args):
     }),
     "lmdb": OrderedDict({
       "columns": lmdb_cols
+    }),
+    "ind": OrderedDict({
+      "columns": ind_cols
+    }),
+    "faik": OrderedDict({
+      "columns": faik_cols
     }),
     "lpr_adm": OrderedDict({
       "columns": lpr2_adm_cols

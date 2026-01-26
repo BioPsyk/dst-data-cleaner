@@ -53,10 +53,11 @@
           # Development releated packages
           openssl
           datamash
-          nextflow
+          nushell
           pkg-config
           packages."${system}".pythonWithPackages
           packages."${system}".rWithPackages
+          nushell
         ];
       };
     });
