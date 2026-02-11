@@ -16,7 +16,6 @@ cd "${project_dir}"
 
 mounts=(
   "bin"
-  "lib"
   "main.nu"
   "metadata.json"
   "test"
