@@ -19,7 +19,7 @@ export def group_files_by_dataset [files: table] {
     if $target == null {
       $target = {
         key: $file.dataset,
-        years: [],
+        periods: [],
         files: []
       }
 
@@ -27,7 +27,7 @@ export def group_files_by_dataset [files: table] {
     }
 
     $target = $target
-      | update "years" ($target.years | append $file.year)
+      | update "periods" ($target.periods | append $file.period)
       | update "files" ($target.files | append $file.output_path)
 
     $results = $results | update $file.dataset $target

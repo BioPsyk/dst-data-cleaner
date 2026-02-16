@@ -25,10 +25,11 @@
 
       pythonWithPackages = pkgs.python3.withPackages (ps: with ps; [
         behave
+        faker
         jinja2
         psycopg2
         pytest
-        faker
+        tabulate
       ]);
 
       rWithPackages = pkgs.rWrapper.override{

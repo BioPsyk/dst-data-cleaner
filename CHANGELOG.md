@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0]
+
+## Changed
+
+- Removes all rows from curated datasets that contain empty/invalid primary key values:
+  - `diagnoses`: `record_id` and `person_id` columns
+  - `education`: `person_id` column
+  - `education`: `person_id` column
+  - `family_income`: `family_id` column
+  - `income`: `person_id` column
+  - `population`: `person_id` column
+
+## Added
+
+- Stage 1 datasets:
+  - AKM
+  - DODSAARS
+  - DODSAASG
+  - RAS
+  - UDDA
+- Stage 2 datasets:
+  - Cause of death
+  - Education
+  - Family income
+  - Income
+  - Labour
+
+## Fixed
+
+- Error when datasets that is not in the metadata file is encountered
+- Error when yearly datasets doesn't have a month in it's name
+- Error when medical record with max/min year of NA
+- Misinterpretation of ID columns that have very large numeric values
+- Missing awk executable in singularity container
+
 ## [0.5.0]
 
 ## Added

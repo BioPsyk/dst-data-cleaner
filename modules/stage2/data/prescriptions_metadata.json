@@ -1,7 +1,7 @@
 {
   "key": "prescriptions",
   "title": "Dispensed prescriptions",
-  "description": "This dataset contains one row for each prescription made in the Danish healthcare system that was dispensed. In this context, \"dispensed\" means that the patient went to the pharmacy to pick up a medicine that was prescribed to them. This dataset does not contain prescriptions that haven't been dispensed/picked up by the patient.",
+  "description": "Contains one row for each prescription made in the Danish healthcare system that was dispensed. In this context, \"dispensed\" means that the patient went to the pharmacy to pick up a medicine that was prescribed to them. This dataset does not contain prescriptions that haven't been dispensed/picked up by the patient.",
   "file_format": {
     "extension": "csv",
     "type": "text",
@@ -14,7 +14,7 @@
   "columns": {
     "person_id": {
       "index": 0,
-      "title": "Civil Personal Register (CPR) number",
+      "title": "person_id",
       "description": "Unique (population wide) ID of the person",
       "examples": [
         "",
@@ -32,8 +32,8 @@
     },
     "atc_id": {
       "index": 1,
-      "title": "WHO-defined Anatomical Therapeutical Chemical code",
-      "description": "",
+      "title": "atc_id",
+      "description": "WHO-defined Anatomical Therapeutical Chemical code",
       "type": "code",
       "nullable": true,
       "relations": [
@@ -49,8 +49,8 @@
     },
     "ibnr_id": {
       "index": 2,
-      "title": "Identifier for the dispensing pharmacy",
-      "description": "",
+      "title": "ibnr_id",
+      "description": "Identifier for the dispensing pharmacy",
       "type": "string",
       "nullable": false,
       "relations": [
@@ -62,8 +62,8 @@
     },
     "dispensed_at": {
       "index": 3,
-      "title": "Date when prescription was dispensed",
-      "description": "",
+      "title": "dispensed_at",
+      "description": "Date when prescription was dispensed",
       "type": "string",
       "nullable": false,
       "relations": [
@@ -75,8 +75,8 @@
     },
     "volume": {
       "index": 4,
-      "title": "Number of defined daily doses per package",
-      "description": "",
+      "title": "volume",
+      "description": "Number of defined daily doses per package",
       "type": "number",
       "nullable": false,
       "relations": [
@@ -88,8 +88,8 @@
     },
     "volume_type_code": {
       "index": 5,
-      "title": "Unit used for a dose",
-      "description": "",
+      "title": "volume_type_code",
+      "description": "Unit used for a dose",
       "type": "string",
       "nullable": false,
       "relations": [
@@ -101,8 +101,8 @@
     },
     "pack_size": {
       "index": 6,
-      "title": "Number of tablets/units per package",
-      "description": "",
+      "title": "pack_size",
+      "description": "Number of tablets/units per package",
       "type": "string",
       "nullable": false,
       "relations": [
@@ -114,8 +114,8 @@
     },
     "strength": {
       "index": 7,
-      "title": "Numerical strength per tablet/unit",
-      "description": "",
+      "title": "strength",
+      "description": "Numerical strength per tablet/unit",
       "type": "number",
       "nullable": false,
       "relations": [
@@ -127,8 +127,8 @@
     },
     "strength_unit": {
       "index": 8,
-      "title": "Unit used for strength",
-      "description": "",
+      "title": "strength_unit",
+      "description": "Unit used for strength",
       "type": "string",
       "nullable": false,
       "relations": [
@@ -140,8 +140,8 @@
     },
     "dosage_form": {
       "index": 9,
-      "title": "Formulation of the drug",
-      "description": "",
+      "title": "dosage_form",
+      "description": "Formulation of the drug",
       "type": "string",
       "nullable": false,
       "relations": [
@@ -153,8 +153,8 @@
     },
     "source_file": {
       "index": 10,
-      "title": "File that row originates from",
-      "description": "",
+      "title": "source_file",
+      "description": "File that row originates from",
       "type": "string",
       "nullable": false
     }

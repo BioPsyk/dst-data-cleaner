@@ -1,4 +1,4 @@
-{ stdenv, lib, version, openssl, datamash, pkg-config, coreutils, writeShellApplication, glibc, locales, tzdata, shadow, netcat, pythonWithPackages, rWithPackages, nushell }:
+{ stdenv, lib, version, openssl, datamash, pkg-config, coreutils, writeShellApplication, glibc, locales, tzdata, shadow, netcat, pythonWithPackages, rWithPackages, nushell, gawk }:
 
 writeShellApplication rec {
   name = "dst-data-container-setup";
@@ -6,6 +6,7 @@ writeShellApplication rec {
   runtimeInputs = [
     coreutils
     datamash
+    gaw
     glibc.bin
     locales
     netcat

@@ -10,7 +10,6 @@ if [[ ! -f "${INPUT_PATH}" ]]; then
   exit 1
 fi
 
->&2 echo "Failed to process given input '${INPUT_PATH}'"
-exit 1
+echo "[INFO] Splitting lmdb file ${INPUT_PATH} into ${OUTPUT_PREFIX}"
 
 tail -n+2 "${INPUT_PATH}" | awk -F , '{ print >> "'${OUTPUT_PREFIX}'-"substr($2, 0, 1)".csv" }'

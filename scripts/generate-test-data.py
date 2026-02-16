@@ -20,6 +20,8 @@ SCRIPT_NAME = "generate-test-data"
 DATE_FORMAT = "%Y-%m-%d"
 PROJECT_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 
+C_DODSMAADE_VALUES = ["-", "0", "01", "02", "03", "04", "05", "06", "07", "08", "09", "1", "10", "2", "3", "4", "5", "6", "7", "8", "9", "99", ""]
+
 #-------------------------------------------------------------------------------
 # Logger setup
 
@@ -412,6 +414,161 @@ def fake_lpr3_kontakter_diagnoser_dataset(fake, bef_dataset):
 
   return (kontakter_result, diagnoser_result)
 
+#-------------------------------------------------------------------------------
+# Cause of death
+
+def fake_dodsaars_record(fake, bef_person):
+  birth_date = datetime.datetime.strptime(bef_person["FOED_DAG"], DATE_FORMAT)
+  death_date = fake.past_date(start_date=birth_date)
+
+  return {
+    "PNR": bef_person["PNR"],
+    "D_DODSDTO": death_date,
+    "C_DODSMAADE": fake.random_element(elements=C_DODSMAADE_VALUES),
+    "C_DOD1": fake.random_element(elements=["9523", "2990", "9869", "I709", "J449", "I251"]),
+    "C_DOD2": fake.random_element(elements=["9523", "2990", "9869", "I709", "J449", "I251"]),
+    "C_DOD3": fake.random_element(elements=["9523", "2990", "9869", "I709", "J449", "I251"]),
+    "C_DOD4": fake.random_element(elements=["9523", "2990", "9869", "I709", "J449", "I251"])
+  }
+
+def fake_dodsaars_dataset(fake, bef_datasets):
+  result = []
+
+  for row in bef_datasets:
+    result.append(
+      fake_dodsaars_record(fake, row)
+    )
+
+  return result
+
+def fake_dodsaasg_record(fake, bef_person):
+  birth_date = datetime.datetime.strptime(bef_person["FOED_DAG"], DATE_FORMAT)
+  death_date = fake.past_date(start_date=birth_date)
+
+  return {
+    "PNR": bef_person["PNR"],
+    "D_DODSDATO": death_date,
+    "C_DODSMAADE": fake.random_element(elements=C_DODSMAADE_VALUES),
+    "C_DOD_1A": fake.random_element(elements=["X59", "R549", "I709", "J449", "I251"]),
+    "C_DOD_1B": fake.random_element(elements=["X59", "R549", "I709", "J449", "I251"]),
+    "C_DOD_1C": fake.random_element(elements=["X59", "R549", "I709", "J449", "I251"]),
+    "C_DOD_1D": fake.random_element(elements=["X59", "R549", "I709", "J449", "I251"])
+  }
+
+def fake_dodsaasg_dataset(fake, bef_datasets):
+  result = []
+
+  for row in bef_datasets:
+    result.append(
+      fake_dodsaasg_record(fake, row)
+    )
+
+  return result
+
+#-------------------------------------------------------------------------------
+# Education
+
+def fake_udda_record(fake, bef_person, year):
+  birth_date   = datetime.datetime.strptime(bef_person["FOED_DAG"], DATE_FORMAT)
+  highest_date = fake.past_date(start_date=birth_date)
+
+  return {
+    "PNR": bef_person["PNR"],
+    "HFAUDD": fake.random_element(elements=["1006", "2461", "4071"]),
+    "HFINSTNR": fake.random_element(elements=["101087", "615010", "751406"]),
+    "HF_KILDE": fake.random_element(elements=["1", "9", "17"]),
+    "HF_VFRA": highest_date,
+    "UDD": fake.random_element(elements=["5189", "5166"])
+  }
+
+def fake_udda_dataset(fake, bef_datasets, year):
+  result = []
+
+  for row in bef_datasets:
+    result.append(
+      fake_udda_record(fake, row, year)
+    )
+
+  return result
+
+#-------------------------------------------------------------------------------
+# Employment
+
+def fake_ras_record(fake, bef_person, year):
+  result = {
+    "PNR": bef_person["PNR"],
+    "ARBSTIL": None,
+    "NYARB": None,
+    "SOCSTIL_KODE": None,
+    "SOC_STATUS_KODE": None,
+    "BRANCHE_77": None,
+    "BRANCHE_KODE": None,
+    "ARB_HOVED_BRA_DB07": None
+  }
+
+  # ARBSTIL i perioden 1980-1993
+  # NYARB i perioden 1994-1995
+  # SOCSTIL i perioden 1996-2008
+  # Source: https://www.dst.dk/da/TilSalg/data-til-forskning/generelt-om-data/dokumentation-af-data/hoejkvalitetsvariable/befolkningens-tilknytning-til-arbejdsmarkedet--ras-/arbstil
+  # The variable SOCSTATUSKODE exists from 2008 onwards. The variable replaces the previous SOCSTILKODE
+  # Soruce: https://www.dst.dk/da/TilSalg/data-til-forskning/generelt-om-data/dokumentation-af-data/hoejkvalitetsvariable/befolkningens-tilknytning-til-arbejdsmarkedet--ras-/soc-status-kode
+  if year <= 1993:
+    result["ARBSTIL"] = fake.random_element(elements=[11, 12, 13, 14, 20, 31, 32, 40, 50, 92])
+  elif year >= 1994 and year <= 1995:
+    result["NYARB"] = fake.random_element(elements=[11, 12, 13, 14, 20, 31, 32, 40, 50, 92])
+  elif year >= 1996 and year <= 2007:
+    result["SOCSTIL_KODE"] = fake.random_element(elements=[115, 118, 130, 200, 316, 400])
+  else:
+    result["SOC_STATUS_KODE"] = fake.random_element(elements=[115, 118, 130, 200, 316, 612])
+
+  # Dansk branchekode 1977 til 1993
+  # Source: https://www.dst.dk/da/Statistik/dokumentation/Times/Personindkomst/BRANCHE-77
+  if year <= 1992:
+    result["BRANCHE_77"] = fake.random_element(elements=["00000", "10000", "34199", "99999"])
+  elif year >= 1992 and year <= 2007:
+    # Gyldig fra: 01-01-1992
+    # Gyldig til: 31-12-2007
+    # Source: https://www.dst.dk/da/TilSalg/data-til-forskning/generelt-om-data/dokumentation-af-data/hoejkvalitetsvariable/beskaeftigede-personer--ras-/branche-kode
+    result["BRANCHE_KODE"] = fake.random_element(elements=[34199, 174090, 182210])
+  else:
+    # Gyldig fra: 1. januar 2008
+    # Source: https://www.dst.dk/da/Statistik/dokumentation/nomenklaturer/db07?id=28e4a8f7-1495-4563-9f8d-1de8587305de
+    result["ARB_HOVED_BRA_DB07"] = fake.random_element(elements=["011100", "641100", "771100", "851000"])
+
+  return result
+
+def fake_ras_dataset(fake, bef_datasets, year):
+  result = []
+
+  for row in bef_datasets:
+    result.append(
+      fake_ras_record(fake, row, year)
+    )
+
+  return result
+
+def fake_akm_record(fake, bef_person, year):
+  return {
+    "PNR": bef_person["PNR"],
+    "SOCIO": fake.random_element(elements=[0, 11, 322]),
+    "SOCIO_GL": fake.random_element(elements=[0, 11, 999]),
+    "SOCIO02": fake.random_element(elements=[0, 111, 330]),
+    "SOCIO13": fake.random_element(elements=[0, 113, 420])
+  }
+
+def fake_akm_dataset(fake, bef_datasets, year):
+  result = []
+
+  for row in bef_datasets:
+    result.append(
+      fake_ras_record(fake, row, year)
+    )
+
+  return result
+
+#-------------------------------------------------------------------------------
+# Utilities
+
 def mk_families_dataset(bef_dataset):
   result = {}
   id_col = "FAMILIE_ID"
@@ -425,9 +582,6 @@ def mk_families_dataset(bef_dataset):
       result[family_id] = [row]
 
   return result
-
-#-------------------------------------------------------------------------------
-# Utilities
 
 def write_dataset(dataset, output_directory, name):
   csv_path = os.path.join(output_directory, f"{name}.csv")
@@ -458,17 +612,20 @@ def main(args):
   if args.random_seed:
     fake.seed_instance(args.random_seed)
 
-  for year in [1985, 1986]:
+  for year in [1985, 1993, 2008, 2020]:
     period = f"{year}12"
     period_date = datetime.datetime(year, 12, 31, 23, 59, 59)
 
-    bef_dataset  = fake_bef_dataset(fake, args.bef_families_count)
-    lmdb_dataset = fake_lmdb_dataset(fake, bef_dataset)
-    ind_dataset  = fake_ind_dataset(fake, bef_dataset, period_date)
-
+    bef_dataset      = fake_bef_dataset(fake, args.bef_families_count)
+    lmdb_dataset     = fake_lmdb_dataset(fake, bef_dataset)
+    ind_dataset      = fake_ind_dataset(fake, bef_dataset, period_date)
+    dodsaars_dataset = fake_dodsaars_dataset(fake, bef_dataset)
+    dodsaasg_dataset = fake_dodsaasg_dataset(fake, bef_dataset)
     families_dataset = mk_families_dataset(bef_dataset)
-
-    faik_dataset  = fake_faik_dataset(fake, families_dataset, period_date)
+    faik_dataset     = fake_faik_dataset(fake, families_dataset, period_date)
+    udda_dataset     = fake_udda_dataset(fake, bef_dataset, year)
+    ras_dataset      = fake_ras_dataset(fake, bef_dataset, year)
+    akm_dataset      = fake_akm_dataset(fake, bef_dataset, year)
 
     (lpr2_adm_dataset, lpr2_diag_dataset) = fake_lpr2_adm_diag_dataset(fake, bef_dataset)
     (lpr3_kontakter_dataset, lpr3_diagnoser_dataset) = fake_lpr3_kontakter_diagnoser_dataset(fake, bef_dataset)
@@ -476,14 +633,19 @@ def main(args):
 
     bef_cols            = write_dataset(bef_dataset, args.grund_data_dir, f"bef{period}")
     lmdb_cols           = write_dataset(lmdb_dataset, args.grund_data_dir, f"lmdb{period}")
-    ind_cols            = write_dataset(ind_dataset, args.grund_data_dir, f"ind{period}")
-    faik_cols           = write_dataset(faik_dataset, args.grund_data_dir, f"faik{period}")
-    lpr2_adm_cols       = write_dataset(lpr2_adm_dataset, args.grund_data_dir, f"lpr_adm{period}")
-    lpr2_diag_cols      = write_dataset(lpr2_diag_dataset, args.grund_data_dir, f"lpr_diag{period}")
-    lpr3_kontakter_cols = write_dataset(lpr3_kontakter_dataset, args.grund_data_dir, f"lpr_f_kontakter{period}")
-    lpr3_diagnoser_cols = write_dataset(lpr3_diagnoser_dataset, args.grund_data_dir, f"lpr_f_diagnoser{period}")
-    psyk_adm_cols       = write_dataset(psyk_adm_dataset, args.grund_data_dir, f"psyk_adm{period}")
-    psyk_diag_cols      = write_dataset(psyk_diag_dataset, args.grund_data_dir, f"psyk_diag{period}")
+    ind_cols            = write_dataset(ind_dataset, args.grund_data_dir, f"ind{year}")
+    dodsaars_cols       = write_dataset(dodsaars_dataset, args.grund_data_dir, f"dodsaars{year}")
+    dodsaasg_cols       = write_dataset(dodsaasg_dataset, args.grund_data_dir, f"dodsaasg{year}")
+    faik_cols           = write_dataset(faik_dataset, args.grund_data_dir, f"faik{year}")
+    udda_cols           = write_dataset(udda_dataset, args.grund_data_dir, f"udda{year}")
+    ras_cols            = write_dataset(ras_dataset, args.grund_data_dir, f"ras{year}")
+    akm_cols            = write_dataset(akm_dataset, args.grund_data_dir, f"akm{year}")
+    lpr2_adm_cols       = write_dataset(lpr2_adm_dataset, args.grund_data_dir, f"lpr_adm{year}")
+    lpr2_diag_cols      = write_dataset(lpr2_diag_dataset, args.grund_data_dir, f"lpr_diag{year}")
+    lpr3_kontakter_cols = write_dataset(lpr3_kontakter_dataset, args.grund_data_dir, f"lpr_f_kontakter{year}")
+    lpr3_diagnoser_cols = write_dataset(lpr3_diagnoser_dataset, args.grund_data_dir, f"lpr_f_diagnoser{year}")
+    psyk_adm_cols       = write_dataset(psyk_adm_dataset, args.grund_data_dir, f"psyk_adm{year}")
+    psyk_diag_cols      = write_dataset(psyk_diag_dataset, args.grund_data_dir, f"psyk_diag{year}")
 
   # These datasets are not divided by year
   pcr_patient_icd8_dataset = fake_pcr_patient_icd8_dataset(fake, bef_dataset)
@@ -510,8 +672,23 @@ def main(args):
     "ind": OrderedDict({
       "columns": ind_cols
     }),
+    "dodsaars": OrderedDict({
+      "columns": dodsaars_cols
+    }),
+    "dodsaasg": OrderedDict({
+      "columns": dodsaasg_cols
+    }),
     "faik": OrderedDict({
       "columns": faik_cols
+    }),
+    "udda": OrderedDict({
+      "columns": udda_cols
+    }),
+    "ras": OrderedDict({
+      "columns": ras_cols
+    }),
+    "akm": OrderedDict({
+      "columns": akm_cols
     }),
     "lpr_adm": OrderedDict({
       "columns": lpr2_adm_cols

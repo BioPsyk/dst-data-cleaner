@@ -35,7 +35,7 @@ Here's where the pipeline `dst-data-cleaner` comes into the picture. It processe
     - Convert `.sas7bdat` files into `.csv` files
     - Exclude irrelevant columns
 - **Stage 2**:
-    - Create new opinionated datasets by manipulating and combining related datasets
+    - Create new curated datasets by manipulating and combining related datasets
 
 ![Pipeline domain model](./docs/images/domain-model-pipeline.png)
 
@@ -45,70 +45,20 @@ format of the data. The actual data is not manipulated in any way.
 **Stage2** of the pipeline is where decisions are taken that can affect research results. The data is
 manipulated and related datasets are merged together to form new datasets.
 
-By keeping the files produced in both stages, researchers can either use the opinionated datasets
+By keeping the files produced in both stages, researchers can either use the curated datasets
 that are easier to work with, or if they are doing their own custom cleaning, they can use the unchanged
 datasets.
 
-## New datasets
+## Curated datasets
 
-These are the new datasets that are derived in stage 2 of the pipeline:
-
-### Population
-
-This dataset contains one row for each unique individual in the population. Each row has the following columns:
-
-| Index | Name          | Description                                             |
-|-------|---------------|---------------------------------------------------------|
-| 0     | person_id     | Unique (population wide) ID of the person               |
-| 1     | gender        | Gender of the person                                    |
-| 2     | born_at       | Birthdate of person, in the format YYYY-MM-DD.          |
-| 3     | birthplace_id | ID of the location where the person was born.           |
-| 4     | mother_id     | ID of the persons mother (legal, not biological).       |
-| 5     | father_id     | ID of the persons father (legal, not biological).       |
-| 6     | family_id     | ID of the family that the person belongs to.            |
-| 7     | source_file   | Name of the dataset file that this row originates from. |
-
-### Diagnoses
-
-This dataset contains one row for each distinct diagnosis made in the Danish healthcare system. Each row has the following columns:
-
-| Index | Name                  | Description                                                                                                                     |
-|-------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| 0     | person_id             | Unique (population wide) ID of the person that was diagnosed                                                                    |
-| 1     | record_id             | Unique (register wide) ID of the medical record which the diagnosis belongs to                                                  |
-| 2     | patient_kind          | Code for the kind of patient the medical record was created as. Note that different codes were used by the different registers. |
-| 3     | starts_at             | Starting date of medical record                                                                                                 |
-| 4     | ends_at               | Ending date of medical record                                                                                                   |
-| 5     | diagnosis_id          | SKS-code (D-code) or ICD-8 code for the diagnosis                                                                               |
-| 6     | diagnosis_kind        | Code for the kind of diagnosis made. Note that different codes were used by the different registers.                            |
-| 7     | record_source_file    | Name of the dataset file that the medical record data of this row originates from.                                              |
-| 8     | diagnosis_source_file | Name of the dataset file that the diagnosis data of this row originates from.                                                   |
-
-### Dispensed prescriptions
-
-This dataset contains one row for each prescription made in the Danish healthcare system that was dispensed. In this context, "dispensed" means that the patient went to the pharmacy to pick up a medicine that was prescribed to them. This dataset does not contain prescriptions that haven't been dispensed/picked up by the patient.
-
-| Index | Name             | Description                                        |
-|-------|------------------|----------------------------------------------------|
-| 0     | person_id        | Civil Personal Register (CPR) number               |
-| 1     | atc_id           | WHO-defined Anatomical Therapeutical Chemical code |
-| 2     | ibnr_id          | Identifier for the dispensing pharmacy             |
-| 3     | dispensed_at     | Date when prescription was dispensed               |
-| 4     | volume           | Number of defined daily doses per package          |
-| 5     | volume_type_code | Unit used for a dose                               |
-| 6     | pack_size        | Number of tablets/units per package                |
-| 7     | strength         | Numerical strength per tablet/unit                 |
-| 8     | strength_unit    | Unit used for strength                             |
-| 9     | dosage_form      | Formulation of the drug                            |
-| 10    | source_file      | File that row originates from                      |
-
-### Incomes
-
-This dataset contains each income year per unique individual in the population. Each row has the following columns:
-
-### Family incomes
-
-This dataset contains each income year per family in the population. Each row has the following columns:
+- [Population](./docs/datasets/population.md)
+- [Deaths](./docs/datasets/deaths.md)
+- [Diagnoses](./docs/datasets/diagnoses.md)
+- [Education](./docs/datasets/education.md)
+- [Employment](./docs/datasets/employment.md)
+- [Family income](./docs/datasets/family_income.md)
+- [Income](./docs/datasets/income.md)
+- [Prescriptions](./docs/datasets/prescriptions.md)
 
 ## Support 💬
 

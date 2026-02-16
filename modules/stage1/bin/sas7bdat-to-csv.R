@@ -31,4 +31,6 @@ input_dt <- read_sas(
     source_file = basename(input_file)
   )
 
+message("[INFO] Writing ", nrow(input_dt), " rows to output file '", output_file, "'")
+
 write_csv(input_dt, output_file)

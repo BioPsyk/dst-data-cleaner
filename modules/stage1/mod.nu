@@ -14,30 +14,36 @@ const MODULE_DIR = path self .
 
 def sas7bdat_to_csv [file: record, output_dir: path] {
   let script_name = "sas7bdat-to-csv.R"
-  let script_path = $MODULE_DIR | path join $script_name
+  let script_path = $MODULE_DIR | path join "bin" $script_name
   let input_path  = $file.dir | path join $"($file.base_name).sas7bdat"
   let columns     = ($file.columns | str join ",")
   let output_path = $output_dir | path join $"($file.base_name).csv"
+
+  log info $"Converting ($file.base_name).sas7bdat to csv"
+
+  let results = $file
+    | insert "input_path" $input_path
+    | insert "output_path" $output_path
+
+  if ($output_path | path exists) {
+    return $results
+  }
 
   if $input_path == $output_path {
     error make { msg: $"Input/output points to the same file: ($input_path)" }
   }
 
-  let result = run-external "Rscript" $script_path $input_path $columns $output_path | complete
+  run-external "Rscript" $script_path $input_path $columns $output_path
 
-  if $result.exit_code != 0 {
-    error make { msg: $"Script ($script_name) failed to convert file ($input_path) into csv: ($result)" }
+  if $env.LAST_EXIT_CODE != 0 {
+    error make { msg: $"Script ($script_name) failed to convert file ($input_path) into csv" }
   }
 
   if not ($output_path | path exists) {
     error make { msg: $"Script ($script_name) did not create output file: ($output_path)" }
   }
 
-  log info $"Converted ($file.base_name).sas7bdat to csv"
-
-  $file
-    | insert "input_path" $input_path
-    | insert "output_path" $output_path
+  $results
 }
 
 #=================================================================================
@@ -51,18 +57,19 @@ export def main [metadata: record, grund_dir: path, external_dir: path, parent_o
   let grund_files = ls $grund_dir
     | where type == file
     | get name
-    | parse --regex "^(?P<dir>.+)/(?P<dataset>[A-Za-z_]+)(?P<year>[0-9]{4})(?P<month>[0-9]{2}).sas7bdat$"
+    | parse --regex "^(?P<dir>.+)/(?P<dataset>[A-Za-z_]+)(?P<period>[0-9]+).sas7bdat$"
+    | filter {|row| ($metadata.stage1 | get -i $row.dataset) != null }
     | insert "columns" {|row| $metadata.stage1 | get $row.dataset | get "columns"}
-    | insert "base_name" {|row| [$row.dataset, $row.year, $row.month] | str join "" }
+    | insert "base_name" {|row| [$row.dataset, $row.period] | str join "" }
 
   let external_files = ls $external_dir
     | where type == file
     | get name
     | parse --regex "^(?P<dir>.+)/(?P<dataset>.+).sas7bdat$"
+    | filter {|row| ($metadata.stage1 | get -i $row.dataset) != null }
     | insert "columns" {|row| $metadata.stage1 | get $row.dataset | get "columns"}
     | insert "base_name" {|row| $row.dataset }
-    | insert "year" 0
-    | insert "month" 0
+    | insert "period" 0
 
   let all_files = $grund_files ++ $external_files
 

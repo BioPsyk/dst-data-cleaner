@@ -42,6 +42,28 @@
         "SKATTOT_13"
       ]
     },
+    "dodsaars": {
+      "columns": [
+        "PNR",
+        "D_DODSDTO",
+        "C_DODSMAADE",
+        "C_DOD1",
+        "C_DOD2",
+        "C_DOD3",
+        "C_DOD4"
+      ]
+    },
+    "dodsaasg": {
+      "columns": [
+        "PNR",
+        "D_DODSDATO",
+        "C_DODSMAADE",
+        "C_DOD_1A",
+        "C_DOD_1B",
+        "C_DOD_1C",
+        "C_DOD_1D"
+      ]
+    },
     "faik": {
       "columns": [
         "FAMILIE_ID",
@@ -52,6 +74,40 @@
         "FAMPRIVAT_PENSION_13",
         "FAMRESTINDK_13",
         "FAMSKATTOT_13"
+      ]
+    },
+    "udda": {
+      "columns": [
+        "PNR",
+        "HFAUDD",
+        "HFINSTNR",
+        "HF_KILDE",
+        "HF_VFRA",
+        "UDD"
+      ]
+    },
+    "ras": {
+      "columns": [
+        "PNR",
+        "ARBSTIL",
+        "NYARB",
+        "SOCSTIL_KODE",
+        "SOC_STATUS_KODE",
+        "BRANCHE_77",
+        "BRANCHE_KODE",
+        "ARB_HOVED_BRA_DB07"
+      ]
+    },
+    "akm": {
+      "columns": [
+        "PNR",
+        "ARBSTIL",
+        "NYARB",
+        "SOCSTIL_KODE",
+        "SOC_STATUS_KODE",
+        "BRANCHE_77",
+        "BRANCHE_KODE",
+        "ARB_HOVED_BRA_DB07"
       ]
     },
     "lpr_adm": {

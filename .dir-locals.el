@@ -27,6 +27,13 @@
                  (dstdc/tmux-pane-cmd "0.0" "clear")
                  (dstdc/tmux-pane-cmd "0.0" "./tmp/scratch.sh"))
 
+               (defun dstdc/generate-test-data ()
+                 "Kills all processes and tmux"
+                 (interactive)
+                 (dstdc/tmux-pane-cmd "0.0" "C-c")
+                 (dstdc/tmux-pane-cmd "0.0" "clear")
+                 (dstdc/tmux-pane-cmd "0.0" "./tmp/scratch.sh"))
+
                (defun dstdc/kill-dev-env ()
                  "Kills all processes and tmux"
                  (interactive)

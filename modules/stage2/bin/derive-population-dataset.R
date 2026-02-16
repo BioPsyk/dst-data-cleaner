@@ -38,14 +38,16 @@ results <- list(
   last_year  = "0001-01-01"
 )
 
-for(idx in range(exp_args, length(args))) {
+for(idx in seq(exp_args, length(args), by=1)) {
   input_file <- args[[idx]]
 
   message("[INFO] Reading input file: ", input_file)
 
-  input_rows <- fread(
+  input_rows <- read_csv(
     input_file,
-    select=c(
+    show_col_types=FALSE,
+    col_types=cols(.default = col_character()),
+    col_select=c(
       "PNR",
       "KOEN",
       "FOED_DAG",
@@ -56,6 +58,10 @@ for(idx in range(exp_args, length(args))) {
       "source_file"
     )
   ) |>
+    filter(
+      PNR != "",
+      !is.na(PNR)
+    ) |>
     rename(
       person_id     = PNR,
       gender        = KOEN,
@@ -184,12 +190,7 @@ Every person appears once in this dataset, with an unique value in the `person_i
     birthplace_id = list(
       index = 3,
       title = "birthplace_id",
-      description = "ID of the location where the person was born.
-A location can either be:
-- A country
-- A location/authority inside Denmark (municipality, state office, church, church district or region)
-- A location/authority inside Greenland (municipality, state office, church, church district or region)
-- Unknown",
+      description = "ID of the authority that registered the persons birth.",
       type = "integer",
       examples = c(
         "5154",
@@ -210,7 +211,7 @@ A location can either be:
     mother_id = list(
       index = 4,
       title = "mother_id",
-      description = "ID of the persons mother (legal, not biological).",
+      description = "ID of the persons mother (legal, not biological)",
       type = "string",
       nullable = FALSE,
       relations = c(
@@ -223,7 +224,7 @@ A location can either be:
     father_id = list(
       index = 5,
       title = "father_id",
-      description = "ID of the persons father (legal, not biological).",
+      description = "ID of the persons father (legal, not biological)",
       type = "string",
       nullable = FALSE,
       relations = c(
@@ -236,7 +237,7 @@ A location can either be:
     family_id = list(
       index = 6,
       title = "family_id",
-      description = "ID of the family that the person belongs to.",
+      description = "ID of the family that the person belongs to",
       type = "string",
       nullable = FALSE,
       relations = c(
@@ -249,7 +250,7 @@ A location can either be:
     source_file = list(
       index = 7,
       title = "source_file",
-      description = "Name of the dataset file that this row originates from.",
+      description = "Name of the dataset file that this row originates from",
       type = "string",
       nullable = FALSE
     )

@@ -57,13 +57,13 @@ message("[INFO] Writing empty output file '", output_path, "'")
 write_csv(empty_output, output_path)
 
 processDatasetGroup <- function(results, group, records_columns, diagnoses_columns) {
-  years <- group[["records"]][["years"]]
-  i     <- 0
+  periods <- group[["records"]][["periods"]]
+  i       <- 0
 
   records_columns$record_source_file      = "source_file"
   diagnoses_columns$diagnosis_source_file = "source_file"
 
-  for (y in years) {
+  for (per in periods) {
     i <- i + 1
 
     records_path   <- group$records$files[[i]]
@@ -73,19 +73,25 @@ processDatasetGroup <- function(results, group, records_columns, diagnoses_colum
     records <- read_csv(
       records_path,
       show_col_types=FALSE,
+      col_types=cols(.default = col_character()),
       col_select=any_of(unlist(records_columns, use.names=FALSE))
-    ) |>
-      rename(!!!records_columns) |>
-      mutate(record_id = as.character(record_id))
+    ) |> rename(!!!records_columns) |>
+      mutate(record_id = as.character(record_id)) |>
+      filter(
+        record_id != "",
+        !is.na(record_id),
+        person_id != "",
+        !is.na(person_id)
+      )
 
     min_year <- min(records$starts_at)
     max_year <- max(records$ends_at)
 
-    if (min_year < results$first_year) {
+    if (!is.na(min_year) && min_year < results$first_year) {
       results$first_year <- min_year
     }
 
-    if (max_year > results$last_year) {
+    if (!is.na(max_year) && max_year > results$last_year) {
       results$last_year <- max_year
     }
 
@@ -93,9 +99,16 @@ processDatasetGroup <- function(results, group, records_columns, diagnoses_colum
     diagnoses <- read_csv(
       diagnoses_path,
       show_col_types=FALSE,
+      col_types=cols(.default = col_character()),
       col_select=any_of(unlist(diagnoses_columns, use.names=FALSE))
     ) |> rename(!!!diagnoses_columns) |>
-      mutate(record_id = as.character(record_id))
+      mutate(
+        record_id = as.character(record_id)
+      ) |>
+      filter(
+        record_id != "",
+        !is.na(record_id)
+      )
 
     output <- inner_join(
       records,
@@ -213,7 +226,7 @@ metadata <- list(
   key         = basename(output_prefix),
   title       = "diagnoses",
   description = sprintf(
-    "Contains every diagnosis found in LPR and PCRR in the period %s to %s",
+    "Contains every diagnosis found in NPR and PCRR in the period %s to %s.",
     results$first_year,
     results$last_year
   ),
