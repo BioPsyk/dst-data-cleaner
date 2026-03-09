@@ -6,7 +6,7 @@ writeShellApplication rec {
   runtimeInputs = [
     coreutils
     datamash
-    gaw
+    gawk
     glibc.bin
     locales
     netcat
