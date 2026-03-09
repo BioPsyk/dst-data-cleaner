@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.11.0]
 
-## Changed
+### Changed
 
 - Removes all rows from curated datasets that contain empty/invalid primary key values:
   - `diagnoses`: `record_id` and `person_id` columns
@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `income`: `person_id` column
   - `population`: `person_id` column
 
-## Added
+### Added
 
 - Stage 1 datasets:
   - AKM
@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Income
   - Labour
 
-## Fixed
+### Fixed
 
 - Error when datasets that is not in the metadata file is encountered
 - Error when yearly datasets doesn't have a month in it's name
@@ -42,30 +42,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.5.0]
 
-## Added
+### Added
 
 - Stage 2 datasets:
   - Incomes
   - Family incomes
 
-## Changed
+### Changed
 
 - Pipeline is now implemented in nushell instead of nextflow
 
 ## [0.4.1]
 
-## Added
+### Added
 
 - Stage 2 datasets:
   - Prescriptions
 
-## Fixed
+### Fixed
 
 - Header of stage 2 dataset diagnoses contains an extra column that shouldn't be there
 
 ## [0.3.0]
 
-## Changed
+### Changed
 
 - Stage 2 datasets:
   - Are now named without start and end year
@@ -75,7 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.1]
 
-## Fixed
+### Fixed
 
 - Stage 2 diagnoses derivation
   - Incorrect column usage for diagnosis kind
