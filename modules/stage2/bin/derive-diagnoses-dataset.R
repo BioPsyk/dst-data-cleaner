@@ -238,82 +238,236 @@ metadata <- list(
     linebreaks = "\n"
   ),
   size = results$total_rows,
-  sorted_by = c("person_id", "record_id"),
+  sorted_by = list("person_id", "record_id"),
   columns = list(
     person_id = list(
       index = 0,
-      title = "person_id",
-      description = "Unique (population wide) ID of the person that was diagnosed",
-      examples = c(
+      title = "Unique person ID",
+      description = "Unique (population wide) ID of the person, which is an anonymized version of the persons CPR number.",
+      examples = list(
         "",
         "846315",
         "0077131291838"
       ),
       type = "string",
-      nullable = FALSE
+      nullable = FALSE,
+      relations = list(
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_ADM:PNR"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:PSYK_ADM:PNR"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_F_KONTAKTER:PNR"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd8:CPRNR"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd10:CPRNR"
+        )
+      )
     ),
     record_id = list(
       index = 1,
-      title = "record_id",
+      title = "Medical record ID",
       description = "Unique (register wide) ID of the medical record which the diagnosis belongs to",
       type = "string",
-      nullable = FALSE
+      nullable = FALSE,
+      relations = list(
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_ADM:RECNUM"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:PSYK_ADM:RECNUM"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_F_KONTAKTER:DW_EK_KONTAKT"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd8:PAT_SEQ"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd10:PAT_SEQ"
+        )
+      )
     ),
     patient_kind = list(
       index = 2,
-      title = "patient_kind",
+      title = "Patient kind",
       description = "Code for the kind of patient the medical record was created as. Note that different codes were used by the different registers.",
       type = "string",
-      nullable = FALSE
+      nullable = FALSE,
+      relations = list(
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_ADM:C_PATTYPE"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:PSYK_ADM:C_PATTYPE"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_F_KONTAKTER:KONTAKTTYPE"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd8:PTTYPE"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd10:PTTYPE"
+        )
+      )
     ),
     starts_at = list(
       index = 3,
-      title = "starts_at",
+      title = "Medical record start date",
       description = "Starting date of medical record",
       type = "string",
       format = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
-      examples = c(
+      examples = list(
         "1964-05-01",
         "2001-11-20"
       ),
-      nullable = FALSE
+      nullable = FALSE,
+      relations = list(
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_ADM:D_INDDTO"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:PSYK_ADM:D_INDDTO"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_F_KONTAKTER:DATO_START"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd8:INDLDATO"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd10:INDLDATO"
+        )
+      )
     ),
     ends_at = list(
       index = 4,
-      title = "ends_at",
+      title = "Medical record end date",
       description = "Ending date of medical record",
       type = "string",
       format = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
-      examples = c(
+      examples = list(
         "1964-05-01",
         "2001-11-20"
       ),
-      nullable = TRUE
+      nullable = TRUE,
+      relations = list(
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_ADM:D_UDDTO"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:PSYK_ADM:D_UDDTO"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_F_KONTAKTER:DATO_SLUT"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd8:UDSKDATO"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd10:UDSKDATO"
+        )
+      )
     ),
     diagnosis_id = list(
       index = 5,
-      title = "diagnosis_id",
+      title = "Diagnosis ICD-code",
       description = "SKS-code (D-code) or ICD-8 code for the diagnosis",
       type = "string",
-      nullable = FALSE
+      nullable = FALSE,
+      relations = list(
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_DIAG:C_DIAG"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:PSYK_DIAG:C_DIAG"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_F_DIAGNOSER:DIAGNOSEKODE"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd8:HOVEDDIAG"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:diag_icd10:DIAG"
+        )
+      )
     ),
     diagnosis_kind = list(
       index = 6,
-      title = "diagnosis_kind",
+      title = "Diagnosis kind code",
       description = "Code for the kind of diagnosis made. Note that different codes were used by the different registers.",
       type = "string",
-      nullable = FALSE
+      nullable = FALSE,
+      relations = list(
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_DIAG:C_DIAGTYPE"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:PSYK_DIAG:C_DIAGTYPE"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:LPR_F_DIAGNOSER:DIAGNOSETYPE"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:patient_icd8:MODIFHD"
+        ),
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:diag_icd10:DART"
+        )
+      )
     ),
     record_source_file = list(
       index = 7,
-      title = "record_source_file",
+      title = "Medical record source file",
       description = "Name of the dataset file that the medical record data of this row originates from.",
       type = "string",
       nullable = FALSE
     ),
     diagnosis_source_file = list(
       index = 8,
-      title = "diagnosis_source_file",
+      title = "Diagnosis source file",
       description = "Name of the dataset file that the diagnosis data of this row originates from.",
       type = "string",
       nullable = FALSE

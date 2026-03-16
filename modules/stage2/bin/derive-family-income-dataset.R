@@ -137,20 +137,20 @@ metadata <- list(
     linebreaks = "\n"
   ),
   size = results$total_rows,
-  sorted_by = c("family_id"),
+  sorted_by = list("family_id"),
   columns = list(
     family_id = list(
       index = 0,
-      title = "family_id",
-      description = "Unique (population wide) ID of the family",
-      examples = c(
+      title = "Family ID",
+      description = "Unique (population wide) ID of the family.",
+      examples = list(
         "",
         "846315",
         "0077131291838"
       ),
       type = "string",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:FAIK:PNR"
@@ -159,16 +159,16 @@ metadata <- list(
     ),
     family_kind = list(
       index = 1,
-      title = "family_kind",
+      title = "Family kind code",
       description = "Code that represents the kind of family.",
-      examples = c(
+      examples = list(
         "1",
         "3",
         "6"
       ),
       type = "integer",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:FAIK:FAMTYPE"
@@ -177,9 +177,9 @@ metadata <- list(
     ),
     tax_year = list(
       index = 2,
-      title = "tax_year",
+      title = "Tax year",
       description = "The year that the income and taxes are for.",
-      examples = c(
+      examples = list(
         "1981",
         "2002",
         "2020"
@@ -189,11 +189,11 @@ metadata <- list(
     ),
     tax_sum = list(
       index = 3,
-      title = "tax_sum",
+      title = "Tax sum",
       description = "The total sum of taxes payed by the family for the tax year.",
       type = "integer",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:FAIK:FAMSKATTOT_13"
@@ -202,11 +202,11 @@ metadata <- list(
     ),
     income_employment = list(
       index = 4,
-      title = "income_employment",
+      title = "Income from employment",
       description = "Total income derived from employment",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:FAIK:FAMERHVERVSINDK_13"
@@ -215,11 +215,11 @@ metadata <- list(
     ),
     income_social = list(
       index = 5,
-      title = "income_social",
+      title = "Income from social security",
       description = "Total income derived from social security",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:FAIK:FAMOFF_OVERFORSEL_13"
@@ -228,11 +228,11 @@ metadata <- list(
     ),
     income_priv_pension = list(
       index = 6,
-      title = "income_priv_pension",
+      title = "Income from private pension",
       description = "Total income derived from private pension",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:FAIK:FAMPRIVAT_PENSION_13"
@@ -241,11 +241,11 @@ metadata <- list(
     ),
     income_other = list(
       index = 7,
-      title = "income_other",
+      title = "Income from other sources",
       description = "Total income derived from other sources than employment, social and private pension.",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:FAIK:FAMRESTINDK_13"
@@ -254,11 +254,11 @@ metadata <- list(
     ),
     income_sum = list(
       index = 8,
-      title = "income_sum",
+      title = "Income sum",
       description = "Total income from all income sources.",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:FAIK:FAMINDKOMSTIALT_13"
@@ -267,7 +267,7 @@ metadata <- list(
     ),
     source_file = list(
       index = 9,
-      title = "source_file",
+      title = "Source dataset file",
       description = "Name of the dataset file that this row originates from.",
       type = "string",
       nullable = FALSE

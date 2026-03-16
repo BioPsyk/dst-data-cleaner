@@ -14,8 +14,8 @@
   "columns": {
     "person_id": {
       "index": 0,
-      "title": "person_id",
-      "description": "Unique (population wide) ID of the person",
+      "title": "Unique person ID",
+      "description": "Unique (population wide) ID of the person, which is an anonymized version of the persons CPR number.",
       "examples": [
         "",
         "846315",
@@ -36,7 +36,7 @@
     },
     "deceased_at": {
       "index": 1,
-      "title": "deceased_at",
+      "title": "Date of death",
       "description": "Date when the person died",
       "type": "string",
       "nullable": false,
@@ -58,8 +58,8 @@
     },
     "mode": {
       "index": 2,
-      "title": "mode",
-      "description": "Mode of death (natural, accident, murder, suicide, etc.)",
+      "title": "How the death happened",
+      "description": "How the death happened (natural, accident, murder, suicide, etc.)",
       "type": "string",
       "nullable": false,
       "examples": [
@@ -80,7 +80,7 @@
     },
     "cause_1_icd_id": {
       "index": 3,
-      "title": "casue_1_icd_id",
+      "title": "Cause of death code 1",
       "description": "ICD-code of the primary cause of death",
       "type": "string",
       "nullable": false,
@@ -101,7 +101,7 @@
     },
     "cause_2_icd_id": {
       "index": 4,
-      "title": "cause_2_icd_id",
+      "title": "Cause of death code 2",
       "description": "ICD-code of the secondary cause of death",
       "type": "string",
       "nullable": false,
@@ -122,7 +122,7 @@
     },
     "cause_3_icd_id": {
       "index": 5,
-      "title": "cause_3_icd_id",
+      "title": "Cause of death code 3",
       "description": "ICD-code of the tertiary cause of death",
       "type": "string",
       "nullable": false,
@@ -143,7 +143,7 @@
     },
     "cause_4_icd_id": {
       "index": 6,
-      "title": "cause_4_icd_id",
+      "title": "Cause of death code 4",
       "description": "ICD-code of the quaternary cause of death",
       "type": "string",
       "nullable": false,
@@ -164,7 +164,7 @@
     },
     "source_file": {
       "index": 7,
-      "title": "source_file",
+      "title": "Source dataset file",
       "description": "File that the row originates from",
       "type": "string",
       "nullable": false,

@@ -126,20 +126,20 @@ Every person appears once in this dataset, with an unique value in the `person_i
     linebreaks = "\n"
   ),
   size = nrow(population),
-  sorted_by = c("person_id"),
+  sorted_by = list("person_id"),
   columns = list(
     person_id = list(
       index = 0,
-      title = "person_id",
-      description = "Unique (population wide) ID of the person",
-      examples = c(
+      title = "Unique person ID",
+      description = "Unique (population wide) ID of the person, which is an anonymized version of the persons CPR number.",
+      examples = list(
         "",
         "846315",
         "0077131291838"
       ),
       type = "string",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:BEF:PNR"
@@ -148,10 +148,10 @@ Every person appears once in this dataset, with an unique value in the `person_i
     ),
     gender = list(
       index = 1,
-      title = "gender",
-      description = "Gender of the person",
+      title = "Gender",
+      description = "Legal gender of the person",
       type = "string",
-      enum = c(
+      enum = list(
         list(
           value       = "m",
           description = "Male"
@@ -162,7 +162,7 @@ Every person appears once in this dataset, with an unique value in the `person_i
         )
       ),
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:BEF:KOEN"
@@ -171,16 +171,16 @@ Every person appears once in this dataset, with an unique value in the `person_i
     ),
     born_at = list(
       index = 2,
-      title = "born_at",
+      title = "Birthdate",
       description = "Birthdate of person, in the format YYYY-MM-DD.",
       type = "string",
       format = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
-      examples = c(
+      examples = list(
         "1964-05-01",
         "2001-11-20"
       ),
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:BEF:FOED_DAG"
@@ -189,15 +189,15 @@ Every person appears once in this dataset, with an unique value in the `person_i
     ),
     birthplace_id = list(
       index = 3,
-      title = "birthplace_id",
+      title = "Birthplace authority",
       description = "ID of the authority that registered the persons birth.",
       type = "integer",
-      examples = c(
+      examples = list(
         "5154",
         ""
       ),
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:BEF:FOEDREG_KODE"
@@ -210,11 +210,11 @@ Every person appears once in this dataset, with an unique value in the `person_i
     ),
     mother_id = list(
       index = 4,
-      title = "mother_id",
+      title = "ID of mother",
       description = "ID of the persons mother (legal, not biological)",
       type = "string",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:BEF:MOR_ID"
@@ -223,11 +223,11 @@ Every person appears once in this dataset, with an unique value in the `person_i
     ),
     father_id = list(
       index = 5,
-      title = "father_id",
+      title = "ID of father",
       description = "ID of the persons father (legal, not biological)",
       type = "string",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:BEF:FAR_ID"
@@ -236,11 +236,11 @@ Every person appears once in this dataset, with an unique value in the `person_i
     ),
     family_id = list(
       index = 6,
-      title = "family_id",
+      title = "ID of family",
       description = "ID of the family that the person belongs to",
       type = "string",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:BEF:FAMILIE_ID"
@@ -249,7 +249,7 @@ Every person appears once in this dataset, with an unique value in the `person_i
     ),
     source_file = list(
       index = 7,
-      title = "source_file",
+      title = "Source dataset file",
       description = "Name of the dataset file that this row originates from",
       type = "string",
       nullable = FALSE

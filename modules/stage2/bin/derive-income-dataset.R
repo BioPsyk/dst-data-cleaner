@@ -140,20 +140,20 @@ metadata <- list(
     linebreaks = "\n"
   ),
   size = results$total_rows,
-  sorted_by = c("person_id"),
+  sorted_by = list("person_id"),
   columns = list(
     person_id = list(
       index = 0,
-      title = "person_id",
-      description = "Unique (population wide) ID of the person",
-      examples = c(
+      title = "Unique person ID",
+      description = "Unique (population wide) ID of the person, which is an anonymized version of the persons CPR number.",
+      examples = list(
         "",
         "846315",
         "0077131291838"
       ),
       type = "string",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:IND:PNR"
@@ -162,9 +162,9 @@ metadata <- list(
     ),
     tax_year = list(
       index = 1,
-      title = "tax_year",
+      title = "Tax year",
       description = "The year that the income and taxes are for.",
-      examples = c(
+      examples = list(
         "1981",
         "2002",
         "2020"
@@ -174,16 +174,16 @@ metadata <- list(
     ),
     tax_scope = list(
       index = 2,
-      title = "tax_scope",
+      title = "Tax liability",
       description = "A code that represents the scope of the persons tax liability. For example, if you are employed and living in Denmark you have full tax liability. If you live abroad but work in Denmark occasionally, you might have reduced tax liability. Tax liability is connected to how much a person benefits from social security. There are 7 distinct codes.",
-      examples = c(
+      examples = list(
         "0",
         "5",
         "9"
       ),
       type = "integer",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:IND:OMFANG"
@@ -192,11 +192,11 @@ metadata <- list(
     ),
     tax_sum = list(
       index = 3,
-      title = "tax_sum",
+      title = "Tax sum",
       description = "The total sum of taxes payed by the person for the tax year.",
       type = "integer",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:IND:SKATTOT_13"
@@ -205,16 +205,16 @@ metadata <- list(
     ),
     income_main_source = list(
       index = 4,
-      title = "income_main_source",
+      title = "Main source of income",
       description = "A code that represents the persons main source of income. For example, if the person was employed, was on benefits or was retired. There are 13 codes.",
       type = "string",
       nullable = FALSE,
-      examples = c(
+      examples = list(
         "01",
         "05",
         "99"
       ),
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:IND:BESKST13"
@@ -223,11 +223,11 @@ metadata <- list(
     ),
     income_employment = list(
       index = 5,
-      title = "income_employment",
+      title = "Income from employment",
       description = "Total income derived from employment",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:IND:ERHVERVSINDK_13"
@@ -236,11 +236,11 @@ metadata <- list(
     ),
     income_social = list(
       index = 6,
-      title = "income_social",
+      title = "Income from social security",
       description = "Total income derived from social security",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:IND:OFF_OVERFORSEL_13"
@@ -249,11 +249,11 @@ metadata <- list(
     ),
     income_priv_pension = list(
       index = 7,
-      title = "income_priv_pension",
+      title = "Income from private pension",
       description = "Total income derived from private pension",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:IND:PRIVAT_PENSION_13"
@@ -262,11 +262,11 @@ metadata <- list(
     ),
     income_other = list(
       index = 8,
-      title = "income_other",
+      title = "Income from other sources",
       description = "Total income derived from other sources than employment, social and private pension.",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:IND:RESUINK_13"
@@ -275,11 +275,11 @@ metadata <- list(
     ),
     income_sum = list(
       index = 9,
-      title = "income_sum",
+      title = "Income sum",
       description = "Total income from all income sources.",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:IND:PERINDKIALT_13"
@@ -288,7 +288,7 @@ metadata <- list(
     ),
     source_file = list(
       index = 10,
-      title = "source_file",
+      title = "Source dataset file",
       description = "Name of the dataset file that this row originates from.",
       type = "string",
       nullable = FALSE

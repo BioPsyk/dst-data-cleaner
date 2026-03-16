@@ -51,14 +51,14 @@ datasets.
 
 ## Curated datasets
 
-- [Population](./docs/datasets/population.md)
-- [Deaths](./docs/datasets/deaths.md)
-- [Diagnoses](./docs/datasets/diagnoses.md)
-- [Education](./docs/datasets/education.md)
-- [Employment](./docs/datasets/employment.md)
-- [Family income](./docs/datasets/family_income.md)
-- [Income](./docs/datasets/income.md)
-- [Prescriptions](./docs/datasets/prescriptions.md)
+- [Deaths](./docs/datasets/deaths.org)
+- [Education](./docs/datasets/education.org)
+- [Prescriptions](./docs/datasets/prescriptions.org)
+- [Family income](./docs/datasets/family_income.org)
+- [Diagnoses](./docs/datasets/diagnoses.org)
+- [Population](./docs/datasets/population.org)
+- [Employment](./docs/datasets/employment.org)
+- [Income](./docs/datasets/income.org)
 
 ## Support 💬
 

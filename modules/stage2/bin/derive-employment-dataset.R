@@ -146,20 +146,20 @@ metadata <- list(
     linebreaks = "\n"
   ),
   size = results$total_rows,
-  sorted_by = c("person_id"),
+  sorted_by = list("person_id"),
   columns = list(
     person_id = list(
       index = 0,
-      title = "person_id",
-      description = "Unique (population wide) ID of the person",
-      examples = c(
+      title = "Unique person ID",
+      description = "Unique (population wide) ID of the person, which is an anonymized version of the persons CPR number.",
+      examples = list(
         "",
         "846315",
         "0077131291838"
       ),
       type = "string",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:RAS:PNR"
@@ -168,9 +168,9 @@ metadata <- list(
     ),
     year = list(
       index = 1,
-      title = "year",
-      description = "The year that the employment status is for.",
-      examples = c(
+      title = "Employment status year",
+      description = "The year that the employment status is for. This year is derived from the name of the source file.",
+      examples = list(
         "1981",
         "2002",
         "2020"
@@ -180,9 +180,9 @@ metadata <- list(
     ),
     status_source = list(
       index = 2,
-      title = "status_source",
+      title = "Status source column",
       description = "In the original dataset 4 different columns were used to represent the employment status. This column contains the name of original column that the status was extracted from.",
-      examples = c(
+      examples = list(
         "ARBSTIL",
         "NYARB",
         "SOCSTIL_KODE",
@@ -193,11 +193,11 @@ metadata <- list(
     ),
     status = list(
       index = 3,
-      title = "status",
+      title = "Employment status",
       description = "A code that represents the employment status of the person for the current year.",
       type = "string",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:RAS:ARBSTIL"
@@ -218,11 +218,11 @@ metadata <- list(
     ),
     industry_source = list(
       index = 4,
-      title = "industry_source",
+      title = "Industry source column",
       description = "In the original dataset 3 different columns were used to represent the industry of the persons employment. This column contains the name of original column that the industry was extracted from.",
       type = "string",
       nullable = FALSE,
-      examples = c(
+      examples = list(
         "BRANCHE_77",
         "BRANCHE_KODE",
         "ARB_HOVED_BRA_DB07"
@@ -230,28 +230,28 @@ metadata <- list(
     ),
     industry = list(
       index = 5,
-      title = "industry",
+      title = "Industry of the employment",
       description = "A code that represents which industry the person was working in for the current year.",
       type = "number",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:RAS:BRANCHE_77"
         ),
         list(
           kind   = "originates_from",
-          target = "urn:column:dst:IND:BRANCHE_KODE"
+          target = "urn:column:dst:RAS:BRANCHE_KODE"
         ),
         list(
           kind   = "originates_from",
-          target = "urn:column:dst:IND:ARB_HOVED_BRA_DB07"
+          target = "urn:column:dst:RAS:ARB_HOVED_BRA_DB07"
         )
       )
     ),
     source_file = list(
       index = 6,
-      title = "source_file",
+      title = "Source dataset file",
       description = "Name of the dataset file that this row originates from.",
       type = "string",
       nullable = FALSE

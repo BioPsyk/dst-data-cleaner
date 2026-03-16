@@ -4,7 +4,7 @@
   nixConfig.bash-prompt = "\[dev\]$ ";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-25.05;
+    nixpkgs.url = github:NixOS/nixpkgs/nixos-25.11;
   };
 
   outputs = { self, nixpkgs }: let
@@ -52,13 +52,14 @@
       default = pkgs.mkShell {
         buildInputs = with pkgs; [
           # Development releated packages
-          openssl
           datamash
           nushell
-          pkg-config
+          nushell
+          openssl
           packages."${system}".pythonWithPackages
           packages."${system}".rWithPackages
-          nushell
+          pkg-config
+          plantuml
         ];
       };
     });

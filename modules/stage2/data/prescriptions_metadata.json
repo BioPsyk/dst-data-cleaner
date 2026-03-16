@@ -14,8 +14,8 @@
   "columns": {
     "person_id": {
       "index": 0,
-      "title": "person_id",
-      "description": "Unique (population wide) ID of the person",
+      "title": "Unique person ID",
+      "description": "Unique (population wide) ID of the person, which is an anonymized version of the persons CPR number.",
       "examples": [
         "",
         "846315",
@@ -32,7 +32,7 @@
     },
     "atc_id": {
       "index": 1,
-      "title": "atc_id",
+      "title": "ATC code of drug",
       "description": "WHO-defined Anatomical Therapeutical Chemical code",
       "type": "code",
       "nullable": true,
@@ -49,7 +49,7 @@
     },
     "ibnr_id": {
       "index": 2,
-      "title": "ibnr_id",
+      "title": "Pharmacy ID",
       "description": "Identifier for the dispensing pharmacy",
       "type": "string",
       "nullable": false,
@@ -62,7 +62,7 @@
     },
     "dispensed_at": {
       "index": 3,
-      "title": "dispensed_at",
+      "title": "Dispensation date",
       "description": "Date when prescription was dispensed",
       "type": "string",
       "nullable": false,
@@ -75,7 +75,7 @@
     },
     "volume": {
       "index": 4,
-      "title": "volume",
+      "title": "Daily doses per package",
       "description": "Number of defined daily doses per package",
       "type": "number",
       "nullable": false,
@@ -88,7 +88,7 @@
     },
     "volume_type_code": {
       "index": 5,
-      "title": "volume_type_code",
+      "title": "Dose unit",
       "description": "Unit used for a dose",
       "type": "string",
       "nullable": false,
@@ -101,7 +101,7 @@
     },
     "pack_size": {
       "index": 6,
-      "title": "pack_size",
+      "title": "Number of units per package",
       "description": "Number of tablets/units per package",
       "type": "string",
       "nullable": false,
@@ -127,7 +127,7 @@
     },
     "strength_unit": {
       "index": 8,
-      "title": "strength_unit",
+      "title": "Strength unit",
       "description": "Unit used for strength",
       "type": "string",
       "nullable": false,
@@ -140,7 +140,7 @@
     },
     "dosage_form": {
       "index": 9,
-      "title": "dosage_form",
+      "title": "Drug formulation",
       "description": "Formulation of the drug",
       "type": "string",
       "nullable": false,
@@ -153,7 +153,7 @@
     },
     "source_file": {
       "index": 10,
-      "title": "source_file",
+      "title": "Source dataset file",
       "description": "File that row originates from",
       "type": "string",
       "nullable": false

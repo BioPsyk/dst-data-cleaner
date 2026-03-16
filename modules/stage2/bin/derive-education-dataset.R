@@ -127,20 +127,20 @@ than their previous highest education.",
     linebreaks = "\n"
   ),
   size = results$total_rows,
-  sorted_by = c("person_id"),
+  sorted_by = list("person_id"),
   columns = list(
     person_id = list(
       index = 0,
-      title = "person_id",
-      description = "Unique (population wide) ID of the person",
-      examples = c(
+      title = "Unique person ID",
+      description = "Unique (population wide) ID of the person, which is an anonymized version of the persons CPR number.",
+      examples = list(
         "",
         "846315",
         "0077131291838"
       ),
       type = "string",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:UDDA:PNR"
@@ -149,16 +149,16 @@ than their previous highest education.",
     ),
     kind = list(
       index = 1,
-      title = "kind",
+      title = "Education kind",
       description = "Code that describes the kind of education that was completed. There are 3510 distinct codes.",
-      examples = c(
+      examples = list(
         "1",
         "2462",
         "6200"
       ),
       type = "integer",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:UDDA:HFAUDD"
@@ -167,16 +167,16 @@ than their previous highest education.",
     ),
     institute = list(
       index = 2,
-      title = "code",
+      title = "Institute code",
       description = "Code of the institute where the education was completed. There are 9330 distinct codes.",
-      examples = c(
+      examples = list(
         "101000",
         "251001",
         "281326"
       ),
       type = "integer",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:UDDA:HFINSTNR"
@@ -185,16 +185,16 @@ than their previous highest education.",
     ),
     source = list(
       index = 3,
-      title = "source",
+      title = "Source of information code",
       description = "Code that classifies the source of the education information. There 19 distinct codes.",
-      examples = c(
+      examples = list(
         "1",
         "10",
         "19"
       ),
       type = "integer",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:UDDA:HF_KILDE"
@@ -203,16 +203,16 @@ than their previous highest education.",
     ),
     completed_at = list(
       index = 4,
-      title = "completed_at",
+      title = "Completion date",
       description = "The date when the education was completed.",
-      examples = c(
+      examples = list(
         "1981-01-03",
         "2002-03-13",
         "2021-10-25"
       ),
       type = "string",
       nullable = FALSE,
-      relations = c(
+      relations = list(
         list(
           kind   = "originates_from",
           target = "urn:column:dst:UDDA:HF_VFRA"
@@ -221,7 +221,7 @@ than their previous highest education.",
     ),
     source_file = list(
       index = 5,
-      title = "source_file",
+      title = "Source dataset file",
       description = "Name of the dataset file that this row originates from.",
       type = "string",
       nullable = FALSE
