@@ -61,7 +61,7 @@ def dataset_to_org_table(dataset):
 
   for key, col in dataset["columns"].items():
     rows.append([
-      col["index"], f"`{key}`", col["description"]
+      col["index"], f"~{key}~", col["description"]
     ])
 
   rows = sorted(rows, key=lambda row: row[0])
@@ -128,7 +128,7 @@ skinparam defaultTextAlignment center
 def dataset_to_org_document(key, name, dataset):
   logger.info("Processing dataset %s", key)
   columns  = dataset_to_org_table(dataset)
-  results = f"""* Dataset `{key}`
+  results = f"""* Dataset ~{key}~
 
 {dataset["description"]}
 
