@@ -123,6 +123,7 @@ def fake_lmdb_dataset(fake, bef_dataset):
 def fake_ind_record(fake, bef_person, period_date):
   birth_date             = datetime.datetime.strptime(bef_person["FOED_DAG"], DATE_FORMAT)
   relative_age           = relativedelta(period_date, birth_date).years
+  social_contrib_income        = fake.random_int(min=0, max=999999)
   employment_income      = fake.random_int(min=0, max=999999)
   social_income          = fake.random_int(min=0, max=999999)
   private_pension_income = fake.random_int(min=0, max=999999) if relative_age > 65 else 0
@@ -135,8 +136,9 @@ def fake_ind_record(fake, bef_person, period_date):
     "ALDER_ULT_INK": relative_age,
     "BESKST13": "08",
     "OMFANG": 1,
-    "PERINDKIALT_13": employment_income + social_income + private_pension_income + rest_income,
-    "ERHVERVSINDK_13": employment_income,
+    "PERINDKIALT_13": social_contrib_income + social_income + private_pension_income + rest_income,
+    "LOENMV_13": employment_income,
+    "ERHVERVSINDK_13": social_contrib_income,
     "OFF_OVERFORSEL_13": social_income,
     "PRIVAT_PENSION_13": private_pension_income,
     "RESUINK_13": rest_income,
@@ -157,6 +159,7 @@ def fake_ind_dataset(fake, bef_dataset, period_date):
 # FAIK dataset
 
 def fake_faik_record(fake, family, period_date):
+  social_contrib_income        = fake.random_int(min=0, max=999999)
   employment_income      = fake.random_int(min=0, max=999999)
   social_income          = fake.random_int(min=0, max=999999)
   private_pension_income = fake.random_int(min=0, max=999999)
@@ -167,8 +170,9 @@ def fake_faik_record(fake, family, period_date):
   return {
     "FAMILIE_ID": family[0]["FAMILIE_ID"],
     "FAMTYPE": 1,
-    "FAMINDKOMSTIALT_13": employment_income + social_income + private_pension_income + rest_income,
-    "FAMERHVERVSINDK_13": employment_income,
+    "FAMINDKOMSTIALT_13": social_contrib_income + social_income + private_pension_income + rest_income,
+    "FAMLOENMV_13": employment_income,
+    "FAMERHVERVSINDK_13": social_contrib_income,
     "FAMOFF_OVERFORSEL_13": social_income,
     "FAMPRIVAT_PENSION_13": private_pension_income,
     "FAMRESTINDK_13": rest_income,

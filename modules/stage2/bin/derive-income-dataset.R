@@ -73,6 +73,7 @@ for(idx in seq(exp_args, length(args), by=1)) {
       "BESKST13",
       "OMFANG",
       "PERINDKIALT_13",
+      "LOENMV_13",
       "ERHVERVSINDK_13",
       "OFF_OVERFORSEL_13",
       "PRIVAT_PENSION_13",
@@ -93,7 +94,8 @@ for(idx in seq(exp_args, length(args), by=1)) {
       tax_scope           = OMFANG,
       tax_sum             = SKATTOT_13,
       income_main_source  = BESKST13,
-      income_employment   = ERHVERVSINDK_13,
+      income_social_contrib     = ERHVERVSINDK_13,
+      income_employment   = LOENMV_13,
       income_social       = OFF_OVERFORSEL_13,
       income_priv_pension = PRIVAT_PENSION_13,
       income_other        = RESUINK_13,
@@ -221,10 +223,10 @@ metadata <- list(
         )
       )
     ),
-    income_employment = list(
+    income_social_contrib = list(
       index = 5,
-      title = "Income from employment",
-      description = "Total income derived from employment",
+      title = "Income from all sources that contributes to social security",
+      description = "Total income derived from employment, self-employment and all other sources that contributes to social security.",
       type = "number",
       nullable = FALSE,
       relations = list(
@@ -234,8 +236,21 @@ metadata <- list(
         )
       )
     ),
-    income_social = list(
+    income_employment = list(
       index = 6,
+      title = "Income from employment",
+      description = "Total income derived from employment",
+      type = "number",
+      nullable = FALSE,
+      relations = list(
+        list(
+          kind   = "originates_from",
+          target = "urn:column:dst:IND:LOENMV_13"
+        )
+      )
+    ),
+    income_social = list(
+      index = 7,
       title = "Income from social security",
       description = "Total income derived from social security",
       type = "number",
@@ -248,7 +263,7 @@ metadata <- list(
       )
     ),
     income_priv_pension = list(
-      index = 7,
+      index = 8,
       title = "Income from private pension",
       description = "Total income derived from private pension",
       type = "number",
@@ -261,7 +276,7 @@ metadata <- list(
       )
     ),
     income_other = list(
-      index = 8,
+      index = 9,
       title = "Income from other sources",
       description = "Total income derived from other sources than employment, social and private pension.",
       type = "number",
@@ -274,7 +289,7 @@ metadata <- list(
       )
     ),
     income_sum = list(
-      index = 9,
+      index = 10,
       title = "Income sum",
       description = "Total income from all income sources.",
       type = "number",
@@ -287,7 +302,7 @@ metadata <- list(
       )
     ),
     source_file = list(
-      index = 10,
+      index = 11,
       title = "Source dataset file",
       description = "Name of the dataset file that this row originates from.",
       type = "string",

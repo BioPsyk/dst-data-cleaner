@@ -1,6 +1,6 @@
 * Dataset ~population~
 
-Contains every person registered in the Danish Civil Registration System in the period 1986-06-24 to 2026-01-05.
+Contains every person registered in the Danish Civil Registration System in the period 1986-09-17 to 2026-01-20.
 Every person appears once in this dataset, with an unique value in the `person_id` column.
 
 ** Columns

@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.0]
+
+### Changed
+
+- Stage 2 dataset `income`
+  - Column `income_employment` is now derived from column `LOENMV_13`, since the original column `ERHVERVSINDK_13` includes employment, self-employment and other sources subject to social security contributions. The original column `ERHVERVSINDK_13` can now be found in the column `income_social_contrib` instead.
+- Stage 2 dataset `family_income`
+  - Column `income_employment` is now derived from column `FAMLOENMV_13`, since the original column `FAMERHVERVSINDK_13` includes employment, self-employment and other sources subject to social security contributions. The original column `FAMERHVERVSINDK_13` can now be found in the column `income_social_contrib` instead.
+
 ## [0.12.0]
 
 ### Changed
